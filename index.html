@@ -153,7 +153,7 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: all 0.1s ease; /* أسرع بكثير - 0.1s فقط */
+      transition: all 0.1s ease;
       border: 1px solid #fadbcb;
     }
     .qty-btn:hover:not(:disabled) {
@@ -162,7 +162,7 @@
       border-color: #ac4e2f;
     }
     .qty-btn:active:not(:disabled) {
-      transform: scale(0.96); /* تأثير نقر سريع */
+      transform: scale(0.96);
     }
     .qty-btn:disabled {
       opacity: 0.3;
@@ -178,7 +178,6 @@
       color: #3e2e25;
     }
 
-    /* مجموعة الأزرار - سرعة تفاعل محسنة */
     .action-group {
       display: flex;
       gap: 1rem;
@@ -199,7 +198,7 @@
       justify-content: center;
       gap: 0.8rem;
       cursor: pointer;
-      transition: all 0.12s ease; /* سرعة خاطفة */
+      transition: all 0.12s ease;
       border: 1px solid rgba(255, 255, 255, 0.3);
     }
     .action-button:hover:not(:disabled) {
@@ -207,7 +206,7 @@
       transform: scale(1.02);
     }
     .action-button:active:not(:disabled) {
-      transform: scale(0.98); /* click feedback */
+      transform: scale(0.98);
     }
     .action-button:disabled {
       opacity: 0.45;
@@ -225,7 +224,6 @@
       color: #4f2c1e;
     }
 
-    /* صندوق الملخص - سيظهر فوراً بعد الضغط */
     .summary-box {
       margin-top: 1.8rem;
       background: #fcf8f4;
@@ -239,10 +237,9 @@
       white-space: pre-line;
       border: 1px solid #ffdecb;
       font-family: 'JetBrains Mono', 'Fira Code', monospace;
-      min-height: 100px; /* حتى لا يختفي */
+      min-height: 100px;
     }
 
-    /* loading overlay */
     .loading-overlay {
       position: fixed;
       inset: 0;
@@ -331,7 +328,6 @@
       </button>
     </div>
 
-    <!-- ملخص الطلب سيظهر هنا مباشرة بعد الضغط -->
     <div id="order-summary" class="summary-box"></div>
     <div class="footer-note">
       <i class="fas fa-leaf"></i> fresh ingredients
@@ -379,7 +375,46 @@
       ];
 
       const menuContainer = document.getElementById('menu-container');
+      const orderSummaryDiv = document.getElementById('order-summary');
 
+      // دالة تحديث الملخص (تسمى عند كل تغيير في الكميات)
+      function updateOrderSummary() {
+        const customerName = document.getElementById('customer-name').value.trim();
+        const customerPhone = document.getElementById('customer-phone').value.trim();
+        
+        let total = 0;
+        let hasItems = false;
+        let summaryText = '';
+
+        // إضافة معلومات العميل إذا كانت موجودة
+        if (customerName || customerPhone) {
+          summaryText += `👤 ${customerName || '?'}  ·  📞 ${customerPhone || '?'}\n\n`;
+        }
+
+        summaryText += '▪️ your order ▪️\n';
+
+        document.querySelectorAll('.qty-module').forEach(container => {
+          const itemName = container.dataset.item;
+          const price = parseFloat(container.dataset.price);
+          const qty = parseInt(container.querySelector('.qty-number').innerText, 10);
+          if (qty > 0) {
+            const subtotal = price * qty;
+            summaryText += `  • ${itemName} x${qty}  = $${subtotal.toFixed(2)}\n`;
+            total += subtotal;
+            hasItems = true;
+          }
+        });
+
+        if (!hasItems) {
+          summaryText += '  (no items selected)\n';
+        }
+
+        summaryText += `\n└─ total  $${total.toFixed(2)}`;
+        
+        orderSummaryDiv.innerText = summaryText;
+      }
+
+      // دالة إنشاء الأقسام (معدلة لإضافة تحديث الملخص عند النقر)
       function createSection(title, items, iconClass) {
         const sectionDiv = document.createElement('div');
         sectionDiv.className = 'menu-section-title';
@@ -427,11 +462,13 @@
           row.appendChild(qtyDiv);
           menuContainer.appendChild(row);
 
+          // أحداث التغيير - كل نقرة تحدث الملخص فوراً
           plusBtn.addEventListener('click', () => {
             let val = parseInt(qtySpan.innerText, 10);
             val++;
             qtySpan.innerText = val;
             minusBtn.disabled = (val === 0);
+            updateOrderSummary(); // تحديث فوري
           });
 
           minusBtn.addEventListener('click', () => {
@@ -440,6 +477,7 @@
               val--;
               qtySpan.innerText = val;
               minusBtn.disabled = (val === 0);
+              updateOrderSummary(); // تحديث فوري
             }
           });
         });
@@ -454,15 +492,19 @@
       const phoneInput = document.getElementById('customer-phone');
       const submitBtn = document.getElementById('submit-btn');
       const cancelBtn = document.getElementById('cancel-btn');
-      const orderSummaryDiv = document.getElementById('order-summary');
       const loadingOverlay = document.getElementById('loadingOverlay');
 
       function validateForm() {
         phoneInput.value = phoneInput.value.replace(/\D/g, '');
         submitBtn.disabled = !(nameInput.value.trim() && phoneInput.value.trim());
+        updateOrderSummary(); // تحديث الملخص عند تغيير الاسم أو الهاتف
       }
+      
       nameInput.addEventListener('input', validateForm);
       phoneInput.addEventListener('input', validateForm);
+
+      // تحديث أولي للملخص
+      updateOrderSummary();
 
       // ---------- الإشعارات ----------
       function showNotification(msg, type = 'success') {
@@ -491,7 +533,7 @@
         }
       }
 
-      // ---------- إعادة تعيين كل شيء ----------
+      // ---------- إعادة تعيين كل شيء (فقط عند الضغط على إلغاء) ----------
       function resetAllFields() {
         nameInput.value = '';
         phoneInput.value = '';
@@ -504,8 +546,7 @@
           minus.disabled = true;
         });
 
-        // مسح محتوى الملخص وعرض رسالة افتراضية (اختياري)
-        orderSummaryDiv.innerText = '';   // سيظهر فارغاً (أو يمكن وضع رسالة ترحيب)
+        updateOrderSummary(); // هذا سيعرض "no items selected"
       }
 
       // ---------- زر الإلغاء ----------
@@ -514,7 +555,7 @@
         showNotification('🧹 Order canceled', 'success');
       });
 
-      // ---------- زر الإرسال (المعدل ليظهر الملخص فوراً) ----------
+      // ---------- زر الإرسال (المعدل) ----------
       submitBtn.addEventListener('click', async function(e) {
         const customerName = nameInput.value.trim();
         const customerPhone = phoneInput.value.trim();
@@ -524,43 +565,31 @@
           return;
         }
 
-        // جمع الأصناف وبناء نص الملخص
+        // جمع الأصناف للإرسال
         let total = 0;
-        let hasItems = false;
         const orderItems = [];
-        let summaryText = `👤 ${customerName}  ·  📞 ${customerPhone}\n\n▪️ your order ▪️\n`;
-
         document.querySelectorAll('.qty-module').forEach(container => {
           const itemName = container.dataset.item;
           const price = parseFloat(container.dataset.price);
           const qty = parseInt(container.querySelector('.qty-number').innerText, 10);
           if (qty > 0) {
             const subtotal = price * qty;
-            summaryText += `  • ${itemName} x${qty}  = $${subtotal.toFixed(2)}\n`;
             total += subtotal;
-            hasItems = true;
             orderItems.push({ name: itemName, quantity: qty, price, subtotal });
           }
         });
 
-        if (!hasItems) {
-          showNotification('choose at least one item', 'error');
-          return;
-        }
+        // الملخص محدث بالفعل (بفضل الدالة updateOrderSummary)
+        // نأخذ النص الحالي من الملخص
+        const currentSummary = orderSummaryDiv.innerText;
 
-        summaryText += `\n└─ total  $${total.toFixed(2)}`;
-        
-        // ✨ عرض الملخص فوراً في الصندوق (حتى قبل نجاح الإرسال)
-        orderSummaryDiv.innerText = summaryText;
-
-        // تجهيز البيانات للإرسال
         const payload = {
           orderId: 'ORD-' + Date.now(),
           timestamp: new Date().toISOString(),
           customer: { name: customerName, phone: customerPhone },
           items: orderItems,
           total: Number(total.toFixed(2)),
-          summary: summaryText   // نفس الملصق
+          summary: currentSummary
         };
 
         // تشغيل التحميل وتعطيل الأزرار
@@ -575,28 +604,23 @@
 
         if (result.success) {
           showNotification('✅ order placed successfully!', 'success');
-          // اختياري: نعيد التعيين بعد نجاح الإرسال مع بقاء الملخص واضحاً؟ 
-          // في الإصدار السابق كنا نعيد التعيين (resetAllFields) مما يمسح الملخص.
-          // لكن المستخدم طلب أن تظهر النتائج (الطلبيات) بعد الضغط، لذلك لا نمسح الملخص.
-          // سنبقي الملخص كما هو ولكن نعيد تعيين الحقول والكميات فقط (بدون مسح الملخص)
-          
-          // إعادة تعيين الحقول والكميات مع بقاء النص المعروض
+          // ننقي الحقول والكميات فقط، ولكن نبقى الملخص كما هو
           nameInput.value = '';
           phoneInput.value = '';
-          validateForm();
+          validateForm(); // هذا يحدث الملخص (سيظهر بدون اسم)
           document.querySelectorAll('.qty-module').forEach(container => {
             const qtySpan = container.querySelector('.qty-number');
             const minus = container.querySelector('.minus');
             qtySpan.innerText = '0';
             minus.disabled = true;
           });
-          // لا نمسح orderSummaryDiv حتى يبقى الطلب الأخير مرئياً
-          // (هذا يحقق المطلوب: رؤية الطلبيات التي طلبها)
+          // بعد تصفير الكميات، نحدث الملخص ليصبح "no items selected"
+          updateOrderSummary();
         } else {
           showNotification('❌ sending failed, try again', 'error');
           submitBtn.disabled = false;
           validateForm(); 
-          // في حالة الفشل نترك الملخص كما هو (نفس الأصناف) عدا أننا نعيد تمكين الزر
+          // الملخص يبقى كما هو (نفس الطلبيات)
         }
       });
 
