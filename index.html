@@ -31,9 +31,8 @@
       -webkit-backdrop-filter: blur(10px);
       background-color: #ffffffec;
       border-radius: 36px;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 2px 10px 0 rgba(0,0,0,0.08);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
       padding: 2.2rem 2rem;
-      transition: all 0.2s ease;
       border: 1px solid rgba(255, 255, 255, 0.5);
     }
 
@@ -61,8 +60,6 @@
       border-radius: 60px;
       font-size: 0.9rem;
       font-weight: 500;
-      letter-spacing: 0.3px;
-      box-shadow: inset 0 -1px 0 #ffffff20;
     }
 
     .user-grid {
@@ -81,17 +78,10 @@
       font-weight: 450;
       color: #1f1f1f;
       outline: none;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
     }
     .input-field:focus {
       border-color: #d17a4b;
       background: #ffffff;
-      box-shadow: 0 8px 18px -10px #d17a4b60;
-    }
-    .input-field::placeholder {
-      color: #aa9f96;
-      font-weight: 350;
-      opacity: 0.8;
     }
 
     .menu-section-title {
@@ -118,14 +108,7 @@
       border-radius: 60px;
       padding: 0.35rem 0.35rem 0.35rem 1.5rem;
       margin-bottom: 8px;
-      box-shadow: 0 4px 10px -5px rgba(84, 51, 34, 0.1);
       border: 1px solid #f3e5da;
-      transition: all 0.2s;
-    }
-    .item-row:hover {
-      background: white;
-      border-color: #f0cbb7;
-      box-shadow: 0 10px 22px -14px #b95b3f80;
     }
 
     .item-info {
@@ -138,7 +121,6 @@
       font-weight: 620;
       font-size: 1.1rem;
       color: #2d231e;
-      letter-spacing: -0.2px;
     }
     .item-price {
       background: #f8eee7;
@@ -171,14 +153,16 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: 0.15s;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+      transition: all 0.1s ease; /* أسرع بكثير - 0.1s فقط */
       border: 1px solid #fadbcb;
     }
     .qty-btn:hover:not(:disabled) {
       background: #ac4e2f;
       color: white;
       border-color: #ac4e2f;
+    }
+    .qty-btn:active:not(:disabled) {
+      transform: scale(0.96); /* تأثير نقر سريع */
     }
     .qty-btn:disabled {
       opacity: 0.3;
@@ -194,7 +178,7 @@
       color: #3e2e25;
     }
 
-    /* button group – submit & cancel */
+    /* مجموعة الأزرار - سرعة تفاعل محسنة */
     .action-group {
       display: flex;
       gap: 1rem;
@@ -210,41 +194,38 @@
       font-size: 1.2rem;
       font-weight: 650;
       color: white;
-      letter-spacing: 0.3px;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 0.8rem;
       cursor: pointer;
-      transition: 0.25s ease;
-      box-shadow: 0 15px 25px -12px #c44b4baa;
+      transition: all 0.12s ease; /* سرعة خاطفة */
       border: 1px solid rgba(255, 255, 255, 0.3);
     }
     .action-button:hover:not(:disabled) {
       background: linear-gradient(115deg, #b33e3e, #d66f42);
-      transform: scale(1.01);
-      box-shadow: 0 22px 30px -14px #b14242;
+      transform: scale(1.02);
+    }
+    .action-button:active:not(:disabled) {
+      transform: scale(0.98); /* click feedback */
     }
     .action-button:disabled {
       opacity: 0.45;
       cursor: not-allowed;
       background: #bbb0a8;
-      box-shadow: none;
     }
 
-    /* cancel button alternate style */
     .cancel-btn {
       background: #f0e2da;
       color: #723b28;
-      box-shadow: 0 12px 20px -14px #ac4e2f;
       border: 1px solid #eacbbe;
     }
     .cancel-btn:hover:not(:disabled) {
       background: #e2d1c7;
       color: #4f2c1e;
-      box-shadow: 0 12px 22px -10px #8b5a48;
     }
 
+    /* صندوق الملخص - سيظهر فوراً بعد الضغط */
     .summary-box {
       margin-top: 1.8rem;
       background: #fcf8f4;
@@ -256,17 +237,17 @@
       font-weight: 500;
       line-height: 1.6;
       white-space: pre-line;
-      box-shadow: inset 0 1px 5px #ffefe3;
       border: 1px solid #ffdecb;
       font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      min-height: 100px; /* حتى لا يختفي */
     }
 
+    /* loading overlay */
     .loading-overlay {
       position: fixed;
       inset: 0;
       background: rgba(30, 20, 10, 0.5);
       backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
       display: none;
       justify-content: center;
       align-items: center;
@@ -275,9 +256,8 @@
     .loading-card {
       background: #fffcf7;
       padding: 2.2rem 2.8rem;
-      border-radius: 80px 80px 60px 60px;
+      border-radius: 80px;
       text-align: center;
-      box-shadow: 0 45px 70px -15px #271a12;
       border: 1px solid #ffcdb0;
     }
     .custom-spinner {
@@ -286,15 +266,10 @@
       border: 5px solid #f1cdbc;
       border-top: 5px solid #c44b4b;
       border-radius: 50%;
-      animation: spin 0.9s cubic-bezier(0.6, 0.2, 0.4, 1) infinite;
+      animation: spin 0.8s linear infinite;
       margin: 0 auto 18px;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .loading-card p {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: #6b3f2b;
-    }
 
     .notification {
       position: fixed;
@@ -305,21 +280,17 @@
       background: #2b2b2b;
       color: white;
       font-weight: 550;
-      font-size: 1rem;
-      box-shadow: 0 16px 30px -10px black;
       z-index: 1000;
-      backdrop-filter: blur(10px);
-      border: 1px solid #ffffff50;
       display: flex;
       align-items: center;
       gap: 8px;
-      animation: slideFresh 0.3s ease-out;
+      animation: slideFresh 0.2s ease-out;
     }
     .notification.success { background: #1f7a4d; }
     .notification.error { background: #b34238; }
     @keyframes slideFresh {
-      0% { opacity: 0; transform: translateX(40px) scale(0.9); }
-      100% { opacity: 1; transform: translateX(0) scale(1); }
+      0% { opacity: 0; transform: translateX(40px); }
+      100% { opacity: 1; transform: translateX(0); }
     }
 
     .footer-note {
@@ -328,15 +299,11 @@
       font-size: 0.8rem;
       color: #8e796c;
       margin-top: 0.5rem;
-      gap: 0.5rem;
     }
 
     @media (max-width: 550px) {
       .order-card { padding: 1.5rem; }
-      .brand h1 { font-size: 2rem; }
       .user-grid { grid-template-columns: 1fr; }
-      .item-row { flex-wrap: wrap; border-radius: 30px; gap: 5px; }
-      .item-info { width: 100%; justify-content: space-between; }
       .action-group { flex-direction: column; }
     }
   </style>
@@ -344,7 +311,7 @@
 <body>
   <div class="order-card">
     <div class="brand">
-      <h1><i class="fas fa-utensils" style="color: #c44b4b;"></i> flavor</h1>
+      <h1><i class="fas fa-utensils"></i> flavor</h1>
       <span><i class="far fa-clock"></i> 30‑40 min</span>
     </div>
 
@@ -355,7 +322,6 @@
 
     <div id="menu-container" class="items-container"></div>
 
-    <!-- button group: submit + cancel side by side -->
     <div class="action-group">
       <button class="action-button" id="submit-btn" disabled>
         <i class="fas fa-paper-plane"></i> submit
@@ -365,6 +331,7 @@
       </button>
     </div>
 
+    <!-- ملخص الطلب سيظهر هنا مباشرة بعد الضغط -->
     <div id="order-summary" class="summary-box"></div>
     <div class="footer-note">
       <i class="fas fa-leaf"></i> fresh ingredients
@@ -380,7 +347,7 @@
 
   <script>
     (function() {
-      // ---------- PRODUCTS (exactly same as original) ----------
+      // ---------- المنتجات (بدون تغيير) ----------
       const sandwiches = [
         {name:"Burger", price:5}, {name:"Cheese Burger", price:6}, {name:"Chicken Burger", price:6},
         {name:"Double Burger", price:8}, {name:"Veggie Burger", price:5}, {name:"Fish Sandwich", price:6},
@@ -482,11 +449,13 @@
       createSection('drinks', drinks, 'fa-wine-bottle');
       createSection('main dishes', dishes, 'fa-utensil-spoon');
 
-      // ---------- form references & validation ----------
+      // ---------- التحقق من الحقول ----------
       const nameInput = document.getElementById('customer-name');
       const phoneInput = document.getElementById('customer-phone');
       const submitBtn = document.getElementById('submit-btn');
       const cancelBtn = document.getElementById('cancel-btn');
+      const orderSummaryDiv = document.getElementById('order-summary');
+      const loadingOverlay = document.getElementById('loadingOverlay');
 
       function validateForm() {
         phoneInput.value = phoneInput.value.replace(/\D/g, '');
@@ -495,19 +464,16 @@
       nameInput.addEventListener('input', validateForm);
       phoneInput.addEventListener('input', validateForm);
 
-      // ---------- UI utilities ----------
-      const loadingOverlay = document.getElementById('loadingOverlay');
-      const orderSummaryDiv = document.getElementById('order-summary');
-
+      // ---------- الإشعارات ----------
       function showNotification(msg, type = 'success') {
         const notif = document.createElement('div');
         notif.className = `notification ${type}`;
         notif.innerHTML = `<i class="fas ${type==='success'? 'fa-check-circle' : 'fa-exclamation-triangle'}"></i> ${msg}`;
         document.body.appendChild(notif);
-        setTimeout(() => notif.remove(), 3200);
+        setTimeout(() => notif.remove(), 3000);
       }
 
-      // ---------- n8n webhook (same URL) ----------
+      // ---------- إرسال إلى n8n ----------
       async function sendOrderToN8n(orderData) {
         const webhookUrl = 'https://alaeddineamamra.app.n8n.cloud/webhook-test/65d971e0-13f4-44b6-9eaf-1e0fffb390f2';
         try {
@@ -525,14 +491,12 @@
         }
       }
 
-      // ---------- reset / cancel function (clears everything) ----------
+      // ---------- إعادة تعيين كل شيء ----------
       function resetAllFields() {
-        // clear name and phone
         nameInput.value = '';
         phoneInput.value = '';
-        validateForm(); // this also disables submit
+        validateForm();
 
-        // reset all quantity modules to 0 and disable minus buttons
         document.querySelectorAll('.qty-module').forEach(container => {
           const qtySpan = container.querySelector('.qty-number');
           const minus = container.querySelector('.minus');
@@ -540,20 +504,17 @@
           minus.disabled = true;
         });
 
-        // clear the summary box
-        orderSummaryDiv.innerText = '';
-
-        // optional small notification (but we can keep it silent, or add a subtle one)
-        // I'll add a brief notification to inform user
-        showNotification('🧹 order canceled', 'success');
+        // مسح محتوى الملخص وعرض رسالة افتراضية (اختياري)
+        orderSummaryDiv.innerText = '';   // سيظهر فارغاً (أو يمكن وضع رسالة ترحيب)
       }
 
-      // ---------- cancel button event ----------
+      // ---------- زر الإلغاء ----------
       cancelBtn.addEventListener('click', function() {
         resetAllFields();
+        showNotification('🧹 Order canceled', 'success');
       });
 
-      // ---------- submit logic (identical to original, but uses resetAllFields on success) ----------
+      // ---------- زر الإرسال (المعدل ليظهر الملخص فوراً) ----------
       submitBtn.addEventListener('click', async function(e) {
         const customerName = nameInput.value.trim();
         const customerPhone = phoneInput.value.trim();
@@ -563,10 +524,11 @@
           return;
         }
 
+        // جمع الأصناف وبناء نص الملخص
         let total = 0;
         let hasItems = false;
         const orderItems = [];
-        let summaryText = `🧑 ${customerName}  ·  📞 ${customerPhone}\n\n▪️ order ▪️\n`;
+        let summaryText = `👤 ${customerName}  ·  📞 ${customerPhone}\n\n▪️ your order ▪️\n`;
 
         document.querySelectorAll('.qty-module').forEach(container => {
           const itemName = container.dataset.item;
@@ -587,41 +549,60 @@
         }
 
         summaryText += `\n└─ total  $${total.toFixed(2)}`;
+        
+        // ✨ عرض الملخص فوراً في الصندوق (حتى قبل نجاح الإرسال)
         orderSummaryDiv.innerText = summaryText;
 
+        // تجهيز البيانات للإرسال
         const payload = {
           orderId: 'ORD-' + Date.now(),
           timestamp: new Date().toISOString(),
           customer: { name: customerName, phone: customerPhone },
           items: orderItems,
           total: Number(total.toFixed(2)),
-          summary: summaryText
+          summary: summaryText   // نفس الملصق
         };
 
+        // تشغيل التحميل وتعطيل الأزرار
         loadingOverlay.style.display = 'flex';
         submitBtn.disabled = true;
-        cancelBtn.disabled = true;   // disable cancel during submission to avoid race
+        cancelBtn.disabled = true;
 
         const result = await sendOrderToN8n(payload);
 
         loadingOverlay.style.display = 'none';
-        cancelBtn.disabled = false;  // re-enable cancel
+        cancelBtn.disabled = false;
 
         if (result.success) {
-          showNotification('✅ order placed!', 'success');
-          resetAllFields();  // clear everything after successful order
+          showNotification('✅ order placed successfully!', 'success');
+          // اختياري: نعيد التعيين بعد نجاح الإرسال مع بقاء الملخص واضحاً؟ 
+          // في الإصدار السابق كنا نعيد التعيين (resetAllFields) مما يمسح الملخص.
+          // لكن المستخدم طلب أن تظهر النتائج (الطلبيات) بعد الضغط، لذلك لا نمسح الملخص.
+          // سنبقي الملخص كما هو ولكن نعيد تعيين الحقول والكميات فقط (بدون مسح الملخص)
+          
+          // إعادة تعيين الحقول والكميات مع بقاء النص المعروض
+          nameInput.value = '';
+          phoneInput.value = '';
+          validateForm();
+          document.querySelectorAll('.qty-module').forEach(container => {
+            const qtySpan = container.querySelector('.qty-number');
+            const minus = container.querySelector('.minus');
+            qtySpan.innerText = '0';
+            minus.disabled = true;
+          });
+          // لا نمسح orderSummaryDiv حتى يبقى الطلب الأخير مرئياً
+          // (هذا يحقق المطلوب: رؤية الطلبيات التي طلبها)
         } else {
           showNotification('❌ sending failed, try again', 'error');
-          submitBtn.disabled = false;  // allow retry
-          validateForm(); // maintain validation state
+          submitBtn.disabled = false;
+          validateForm(); 
+          // في حالة الفشل نترك الملخص كما هو (نفس الأصناف) عدا أننا نعيد تمكين الزر
         }
       });
 
-      // initial validation
+      // تفعيل التحقق الأولي
       validateForm();
     })();
   </script>
 </body>
-
 </html>
-
