@@ -3,107 +3,136 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>flavor · ingredient studio</title>
+  <title>flavor · smart ingredient tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
     }
 
     body {
-      background: #f7f3ee;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      background: linear-gradient(145deg, #fef7f0 0%, #f9ede3 100%);
       min-height: 100vh;
-      padding: 2rem 1rem;
+      padding: 2rem 1.5rem;
+      position: relative;
+    }
+
+    /* animated background grain */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: radial-gradient(rgba(0,0,0,0.02) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none;
+      z-index: 0;
     }
 
     .order-card {
-      max-width: 1400px;
-      width: 100%;
-      background: #ffffffec;
+      max-width: 1600px;
+      margin: 0 auto;
+      background: rgba(255, 255, 245, 0.96);
       backdrop-filter: blur(2px);
-      border-radius: 40px;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
-      padding: 2rem 1.8rem;
-      border: 1px solid rgba(245, 222, 205, 0.7);
+      border-radius: 56px;
+      box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 215, 190, 0.5);
+      padding: 2rem 2rem;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 2;
     }
 
+    /* brand section */
     .brand {
       display: flex;
       align-items: center;
       gap: 1rem;
-      margin-bottom: 1.8rem;
+      margin-bottom: 2rem;
       flex-wrap: wrap;
+      border-bottom: 2px solid rgba(196, 75, 75, 0.2);
+      padding-bottom: 1rem;
     }
     .brand h1 {
-      font-size: 2.3rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, #c44b4b, #b95b3f);
+      font-size: 2.6rem;
+      font-weight: 800;
+      background: linear-gradient(125deg, #c44b4b, #e28b5e, #c44b4b);
+      background-size: 200% auto;
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      margin-right: auto;
       letter-spacing: -0.02em;
+      animation: shimmer 5s infinite;
+    }
+    @keyframes shimmer {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
     .brand span {
-      background: #2b2b2b;
-      color: #f9d77e;
-      padding: 0.3rem 1.2rem;
-      border-radius: 60px;
+      background: #2c241f;
+      color: #ffdeaf;
+      padding: 0.4rem 1.3rem;
+      border-radius: 80px;
       font-size: 0.85rem;
-      font-weight: 500;
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     .user-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1.2rem;
+      gap: 1.3rem;
       margin-bottom: 2rem;
     }
     .input-field {
-      background: #f9f6f2;
-      border: 1.5px solid #eee2d8;
-      border-radius: 34px;
-      padding: 0.9rem 1.5rem;
+      background: #ffffff;
+      border: 2px solid #f2e0d2;
+      border-radius: 48px;
+      padding: 1rem 1.6rem;
       font-size: 1rem;
       outline: none;
-      transition: 0.2s;
+      transition: all 0.2s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
     }
     .input-field:focus {
-      border-color: #d17a4b;
-      background: white;
+      border-color: #c44b4b;
+      box-shadow: 0 8px 20px -10px rgba(196,75,75,0.25);
+      transform: translateY(-1px);
     }
 
+    /* search + filter bar */
     .search-filter-bar {
       display: flex;
       flex-wrap: wrap;
       gap: 1rem;
       margin-bottom: 2rem;
       align-items: center;
-      background: #fefaf6;
-      padding: 0.8rem 1.2rem;
-      border-radius: 60px;
-      border: 1px solid #f0e1d4;
+      background: #fffaf5;
+      padding: 0.6rem 1.2rem;
+      border-radius: 70px;
+      border: 1px solid #f5e1cf;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.02);
     }
     .search-box {
       flex: 2;
-      min-width: 180px;
+      min-width: 200px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 12px;
       background: white;
-      border-radius: 44px;
-      padding: 0.5rem 1rem;
-      border: 1px solid #eadbcb;
+      border-radius: 50px;
+      padding: 0.6rem 1.2rem;
+      border: 1px solid #f0dfcf;
     }
-    .search-box i {
-      color: #c48160;
-    }
+    .search-box i { color: #c97a54; font-size: 1.1rem; }
     .search-box input {
       border: none;
       background: transparent;
@@ -117,159 +146,137 @@
       gap: 8px;
     }
     .cat-btn {
-      background: #ede3db;
+      background: #f3e9e2;
       border: none;
-      padding: 0.5rem 1.2rem;
-      border-radius: 40px;
-      font-weight: 550;
+      padding: 0.6rem 1.4rem;
+      border-radius: 44px;
+      font-weight: 600;
       font-size: 0.85rem;
-      color: #4d3428;
+      color: #5c3a2a;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
     .cat-btn.active {
       background: #c44b4b;
       color: white;
-      box-shadow: 0 6px 12px -8px rgba(196, 75, 75, 0.4);
+      transform: scale(0.97);
+      box-shadow: 0 8px 18px -8px #c44b4b70;
     }
+    .cat-btn i { font-size: 0.9rem; }
 
-    /* two columns layout: left menu grid, right ingredients panel */
+    /* layout */
     .split-layout {
       display: flex;
-      gap: 1.8rem;
+      gap: 2rem;
       flex-wrap: wrap;
+      margin-bottom: 1.8rem;
     }
     .menu-section {
-      flex: 2;
+      flex: 2.2;
       min-width: 280px;
     }
     .ingredients-section {
-      flex: 1.2;
-      min-width: 260px;
-      background: #fef9f4;
-      border-radius: 32px;
-      border: 1px solid #f3e2d4;
-      padding: 1.2rem;
+      flex: 1.3;
+      background: linear-gradient(135deg, #fffaf4, #fff5ec);
+      border-radius: 40px;
+      border: 1px solid #ffe1cc;
+      padding: 1.4rem;
       height: fit-content;
       position: sticky;
       top: 1rem;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.02);
+      box-shadow: 0 12px 28px -12px rgba(0,0,0,0.1);
+      backdrop-filter: blur(4px);
+      transition: all 0.2s;
     }
     .ingredients-header {
       display: flex;
       align-items: center;
-      gap: 10px;
-      border-bottom: 2px dashed #e7cfc0;
-      padding-bottom: 0.7rem;
+      gap: 12px;
+      border-bottom: 2px solid #f7dbc9;
+      padding-bottom: 0.8rem;
       margin-bottom: 1rem;
     }
-    .ingredients-header i {
-      font-size: 1.6rem;
-      color: #c9724c;
-    }
-    .ingredients-header h3 {
-      font-weight: 700;
-      color: #4a2c1e;
-    }
+    .ingredients-header i { font-size: 1.8rem; color: #d9794a; }
+    .ingredients-header h3 { font-weight: 800; color: #3d2a1d; }
     .ingredient-badge {
-      background: #ffffff;
-      border-radius: 60px;
+      background: white;
+      border-radius: 40px;
       padding: 0.35rem 1rem;
       margin: 0.3rem 0.4rem;
       display: inline-block;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 500;
-      color: #794f38;
-      border: 1px solid #f0dbcE;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-    }
-    .empty-ingredients {
-      color: #b8886c;
-      font-style: italic;
-      padding: 1rem 0;
-      text-align: center;
+      color: #a5512e;
+      border: 1px solid #f3d7c4;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+      transition: all 0.1s;
     }
     .menu-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
       gap: 1rem;
-      max-height: 520px;
+      max-height: 540px;
       overflow-y: auto;
       padding-right: 6px;
-      margin-bottom: 0.5rem;
     }
-    .menu-grid::-webkit-scrollbar {
-      width: 6px;
-    }
-    .menu-grid::-webkit-scrollbar-track {
-      background: #f2e3da;
-      border-radius: 10px;
-    }
-    .menu-grid::-webkit-scrollbar-thumb {
-      background: #c87a59;
-      border-radius: 10px;
-    }
+    .menu-grid::-webkit-scrollbar { width: 6px; }
+    .menu-grid::-webkit-scrollbar-track { background: #f4e3d8; border-radius: 10px; }
+    .menu-grid::-webkit-scrollbar-thumb { background: #d68b64; border-radius: 10px; }
 
     .menu-item-card {
-      background: #ffffffea;
+      background: white;
       border-radius: 28px;
-      border: 1px solid #f5e2d4;
-      padding: 0.75rem 1rem;
-      transition: all 0.15s ease;
+      border: 1px solid #ffe4d0;
+      padding: 0.8rem 1rem;
+      transition: all 0.2s ease;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 8px;
       cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.02);
+    }
+    .menu-item-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px -12px rgba(0,0,0,0.15);
+      border-color: #dbb38c;
     }
     .menu-item-card.selected-for-ingredients {
-      background: #fff3ea;
-      border-left: 5px solid #c44b4b;
-      box-shadow: 0 4px 12px rgba(196,75,75,0.1);
-    }
-    .item-details {
-      flex: 3;
-    }
-    .item-name-id {
-      display: flex;
-      align-items: baseline;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 6px;
+      background: linear-gradient(110deg, #fff3ea, #ffe9dd);
+      border-left: 6px solid #c44b4b;
+      box-shadow: 0 8px 18px -10px #c44b4b50;
     }
     .item-name {
-      font-weight: 680;
+      font-weight: 700;
       font-size: 1rem;
-      color: #2c221d;
+      color: #2c1f17;
     }
     .item-id-badge {
       background: #f1e3db;
       font-size: 0.7rem;
-      font-weight: 500;
-      padding: 0.15rem 0.5rem;
+      font-weight: 600;
+      padding: 0.2rem 0.7rem;
       border-radius: 40px;
       color: #a75638;
-      font-family: monospace;
     }
     .price-tag {
-      font-weight: 700;
-      color: #b35132;
-      background: #fef0e8;
-      display: inline-block;
+      font-weight: 800;
+      color: #c2542e;
+      background: #fff0e6;
       padding: 0.2rem 0.9rem;
-      border-radius: 24px;
+      border-radius: 30px;
       font-size: 0.85rem;
     }
     .qty-module {
       display: flex;
       align-items: center;
-      gap: 5px;
-      background: #f2eae3;
-      border-radius: 44px;
+      gap: 6px;
+      background: #f5ede7;
+      border-radius: 48px;
       padding: 0.2rem;
     }
     .qty-btn {
@@ -278,81 +285,89 @@
       width: 34px;
       height: 34px;
       border-radius: 34px;
-      font-size: 1.4rem;
-      font-weight: 600;
-      color: #ac4e2f;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #c04e2b;
       cursor: pointer;
-      transition: 0.08s linear;
-      border: 1px solid #fadbcb;
+      transition: 0.1s;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     }
     .qty-btn:hover:not(:disabled) {
-      background: #ac4e2f;
+      background: #c44b4b;
       color: white;
+      transform: scale(0.96);
     }
     .qty-number {
-      min-width: 30px;
+      min-width: 32px;
       text-align: center;
       font-weight: 800;
       font-size: 1.1rem;
     }
     .summary-box {
-      background: #fcf8f4;
-      border-radius: 28px;
+      background: #fef7f0;
+      border-radius: 32px;
       padding: 1.2rem 1.5rem;
-      border-left: 8px solid #d8997b;
-      font-family: 'JetBrains Mono', monospace;
+      border-left: 6px solid #e28b5e;
+      font-family: monospace;
       font-size: 0.85rem;
       line-height: 1.55;
       white-space: pre-line;
-      margin-top: 1.5rem;
-      border: 1px solid #ffdecb;
-      max-height: 200px;
-      overflow-y: auto;
+      margin-top: 1rem;
+      box-shadow: inset 0 1px 2px #fff8, 0 4px 12px rgba(0,0,0,0.02);
     }
     .action-group {
       display: flex;
-      gap: 1rem;
-      margin: 1.2rem 0 0.8rem;
+      gap: 1.2rem;
+      margin: 1.5rem 0 1rem;
       flex-wrap: wrap;
     }
     .action-button {
       flex: 1;
-      background: linear-gradient(115deg, #c44b4b, #e07c4c);
+      background: linear-gradient(100deg, #c44b4b, #df7b4a);
       border: none;
-      padding: 1rem 1.5rem;
+      padding: 1rem 1.6rem;
       border-radius: 60px;
-      font-weight: 700;
-      font-size: 1.05rem;
+      font-weight: 800;
+      font-size: 1rem;
       color: white;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.7rem;
+      gap: 12px;
       cursor: pointer;
+      transition: 0.2s;
+      box-shadow: 0 8px 20px -8px #c44b4b70;
     }
     .cancel-btn {
-      background: #f0e2da;
-      color: #723b28;
+      background: #ede0d5;
+      color: #7a4a30;
+      box-shadow: none;
     }
     .action-button:disabled {
       opacity: 0.5;
+      transform: none;
       cursor: not-allowed;
     }
     .loading-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(30, 20, 10, 0.6);
-      backdrop-filter: blur(8px);
+      background: rgba(20, 12, 8, 0.7);
+      backdrop-filter: blur(12px);
       display: none;
       justify-content: center;
       align-items: center;
-      z-index: 1000;
+      z-index: 2000;
     }
     .loading-card {
-      background: #fffcf7;
-      padding: 2rem 2.5rem;
-      border-radius: 70px;
+      background: #fffaf2;
+      padding: 2rem 2.8rem;
+      border-radius: 90px;
       text-align: center;
+      animation: float 0.6s ease;
+    }
+    @keyframes float {
+      0% { transform: scale(0.96); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
     }
     .custom-spinner {
       width: 48px;
@@ -360,41 +375,40 @@
       border: 4px solid #f1cdbc;
       border-top: 4px solid #c44b4b;
       border-radius: 50%;
-      animation: spin 0.7s linear infinite;
+      animation: spin 0.8s linear infinite;
       margin: 0 auto 15px;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
     .notification {
       position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 12px 24px;
-      border-radius: 50px;
-      background: #2b2b2b;
+      bottom: 24px;
+      right: 24px;
+      padding: 14px 28px;
+      border-radius: 60px;
+      background: #2c241f;
       color: white;
-      font-weight: 500;
-      z-index: 1100;
+      font-weight: 600;
+      z-index: 2100;
       display: flex;
       align-items: center;
-      gap: 8px;
-      animation: fadeSlide 0.2s ease;
+      gap: 12px;
+      animation: slideUp 0.3s ease;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.2);
     }
-    .notification.success { background: #1f7a4d; }
-    .notification.error { background: #b34238; }
-    @keyframes fadeSlide {
-      0% { opacity: 0; transform: translateX(30px);}
-      100% { opacity: 1; transform: translateX(0);}
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     .footer-note {
       text-align: right;
-      font-size: 0.75rem;
-      color: #a98974;
-      margin-top: 0.4rem;
+      font-size: 0.7rem;
+      color: #bc8a6a;
+      margin-top: 0.5rem;
     }
     @media (max-width: 860px) {
       .split-layout { flex-direction: column; }
-      .ingredients-section { position: static; width: 100%; }
-      .order-card { padding: 1.2rem; }
+      .ingredients-section { position: static; }
+      .order-card { padding: 1.3rem; }
       .user-grid { grid-template-columns: 1fr; }
     }
   </style>
@@ -402,20 +416,15 @@
 <body>
 <div class="order-card">
   <div class="brand">
-    <h1><i class="fas fa-utensils"></i> flavor</h1>
-    <span><i class="far fa-clock"></i> 30‑40 min</span>
+    <h1><i class="fas fa-leaf"></i> flavor · stockwise</h1>
+    <span><i class="fas fa-calculator"></i> smart ingredients</span>
   </div>
-
   <div class="user-grid">
     <input type="text" id="customer-name" class="input-field" placeholder="your name *" autocomplete="off">
-    <input type="tel" id="customer-phone" class="input-field" placeholder="phone number *" autocomplete="off">
+    <input type="tel" id="customer-phone" class="input-field" placeholder="phone *" autocomplete="off">
   </div>
-
   <div class="search-filter-bar">
-    <div class="search-box">
-      <i class="fas fa-search"></i>
-      <input type="text" id="search-input" placeholder="search burger, pizza, juice...">
-    </div>
+    <div class="search-box"><i class="fas fa-search"></i><input type="text" id="search-input" placeholder="search dish..."></div>
     <div class="category-tabs" id="category-tabs">
       <button class="cat-btn active" data-cat="all"><i class="fas fa-grid-2"></i> All</button>
       <button class="cat-btn" data-cat="sandwiches"><i class="fas fa-burger"></i> Sandwiches</button>
@@ -423,375 +432,250 @@
       <button class="cat-btn" data-cat="dishes"><i class="fas fa-utensil-spoon"></i> Main dishes</button>
     </div>
   </div>
-
   <div class="split-layout">
-    <div class="menu-section">
-      <div id="menu-grid-container" class="menu-grid"></div>
-    </div>
+    <div class="menu-section"><div id="menu-grid-container" class="menu-grid"></div></div>
     <div class="ingredients-section" id="ingredientsPanel">
-      <div class="ingredients-header">
-        <i class="fas fa-mortar-pestle"></i>
-        <h3>recipe · fresh ingredients</h3>
-      </div>
-      <div id="ingredients-list-container">
-        <div class="empty-ingredients"><i class="fas fa-hand-pointer"></i> click any item to see its real ingredients</div>
-      </div>
+      <div class="ingredients-header"><i class="fas fa-microchip"></i><h3>ingredient footprint</h3></div>
+      <div id="ingredients-list-container"><div class="empty-ingredients" style="color:#b68462;"><i class="fas fa-hand-peace"></i> click item to see recipe + per‑unit composition</div></div>
     </div>
   </div>
-
   <div class="action-group">
-    <button class="action-button" id="submit-btn" disabled><i class="fas fa-paper-plane"></i> submit order</button>
-    <button class="action-button cancel-btn" id="cancel-btn"><i class="fas fa-trash-alt"></i> cancel order</button>
+    <button class="action-button" id="submit-btn" disabled><i class="fas fa-chart-line"></i> submit order + track ingredients</button>
+    <button class="action-button cancel-btn" id="cancel-btn"><i class="fas fa-broom"></i> cancel all</button>
   </div>
   <div id="order-summary" class="summary-box"></div>
-  <div class="footer-note"><i class="fas fa-leaf"></i> each item has unique ID & fresh ingredients shown on click</div>
+  <div class="footer-note"><i class="fas fa-chart-simple"></i> each order calculates total ingredient consumption (hidden webhook)</div>
 </div>
-
-<div class="loading-overlay" id="loadingOverlay">
-  <div class="loading-card"><div class="custom-spinner"></div><p><i class="fas fa-mug-hot"></i> cooking order ...</p></div>
-</div>
+<div class="loading-overlay" id="loadingOverlay"><div class="loading-card"><div class="custom-spinner"></div><p><i class="fas fa-chart-pie"></i> calculating & sending ingredient usage ...</p></div></div>
 
 <script>
-  (function() {
-    // ---------- MASTER DATASET with ID 1-70 ----------
-    const fullMenu = [
-      { id:1, name:"Burger", price:5, category:"sandwiches" }, { id:2, name:"Cheese Burger", price:6, category:"sandwiches" },
-      { id:3, name:"Chicken Burger", price:6, category:"sandwiches" }, { id:4, name:"Double Burger", price:8, category:"sandwiches" },
-      { id:5, name:"Veggie Burger", price:5, category:"sandwiches" }, { id:6, name:"Fish Sandwich", price:6, category:"sandwiches" },
-      { id:7, name:"Grilled Chicken Sandwich", price:7, category:"sandwiches" }, { id:8, name:"Spicy Chicken Sandwich", price:7, category:"sandwiches" },
-      { id:9, name:"Bacon Burger", price:7, category:"sandwiches" }, { id:10, name:"Mushroom Burger", price:6, category:"sandwiches" },
-      { id:11, name:"BBQ Burger", price:8, category:"sandwiches" }, { id:12, name:"Tuna Sandwich", price:6, category:"sandwiches" },
-      { id:13, name:"Egg Sandwich", price:4, category:"sandwiches" }, { id:14, name:"Club Sandwich", price:7, category:"sandwiches" },
-      { id:15, name:"Ham Sandwich", price:6, category:"sandwiches" }, { id:16, name:"Salami Sandwich", price:6, category:"sandwiches" },
-      { id:17, name:"Turkey Sandwich", price:7, category:"sandwiches" }, { id:18, name:"BLT Sandwich", price:6, category:"sandwiches" },
-      { id:19, name:"Cheesesteak Sandwich", price:8, category:"sandwiches" }, { id:20, name:"Pulled Pork Sandwich", price:8, category:"sandwiches" },
-      { id:21, name:"Chicken Nuggets", price:5, category:"dishes" }, { id:22, name:"French Fries", price:3, category:"dishes" },
-      { id:23, name:"Mozzarella Sticks", price:4, category:"dishes" }, { id:24, name:"Chicken Wings", price:6, category:"dishes" },
-      { id:25, name:"Grilled Chicken", price:8, category:"dishes" }, { id:26, name:"Beef Steak", price:10, category:"dishes" },
-      { id:27, name:"Pasta Bolognese", price:7, category:"dishes" }, { id:28, name:"Spaghetti Carbonara", price:7, category:"dishes" },
-      { id:29, name:"Salmon Fillet", price:9, category:"dishes" }, { id:30, name:"Fish & Chips", price:8, category:"dishes" },
-      { id:31, name:"Shrimp Tempura", price:9, category:"dishes" }, { id:32, name:"Pizza Margherita", price:6, category:"dishes" },
-      { id:33, name:"Pepperoni Pizza", price:7, category:"dishes" }, { id:34, name:"Vegetable Pizza", price:6, category:"dishes" },
-      { id:35, name:"Lasagna", price:7, category:"dishes" }, { id:36, name:"Taco Plate", price:6, category:"dishes" },
-      { id:37, name:"Burrito", price:7, category:"dishes" }, { id:38, name:"Nachos", price:5, category:"dishes" },
-      { id:39, name:"Fried Rice", price:6, category:"dishes" }, { id:40, name:"Chicken Curry", price:7, category:"dishes" },
-      { id:41, name:"Beef Burger Plate", price:8, category:"dishes" }, { id:42, name:"Veggie Plate", price:7, category:"dishes" },
-      { id:43, name:"Mixed Grill", price:12, category:"dishes" }, { id:44, name:"Kebab Plate", price:10, category:"dishes" },
-      { id:45, name:"Sushi Set", price:12, category:"dishes" }, { id:46, name:"Ramen Bowl", price:9, category:"dishes" },
-      { id:47, name:"Pad Thai", price:8, category:"dishes" }, { id:48, name:"BBQ Ribs", price:12, category:"dishes" },
-      { id:49, name:"Caesar Salad", price:5, category:"dishes" }, { id:50, name:"Greek Salad", price:5, category:"dishes" },
-      { id:51, name:"Coca Cola", price:2, category:"drinks" }, { id:52, name:"Pepsi", price:2, category:"drinks" },
-      { id:53, name:"Sprite", price:2, category:"drinks" }, { id:54, name:"7 Up", price:2, category:"drinks" },
-      { id:55, name:"Fanta Orange", price:2, category:"drinks" }, { id:56, name:"Fanta Lemon", price:2, category:"drinks" },
-      { id:57, name:"Mountain Dew", price:3, category:"drinks" }, { id:58, name:"Dr Pepper", price:3, category:"drinks" },
-      { id:59, name:"Root Beer", price:3, category:"drinks" }, { id:60, name:"Iced Tea", price:2, category:"drinks" },
-      { id:61, name:"Lemonade", price:2, category:"drinks" }, { id:62, name:"Water", price:1, category:"drinks" },
-      { id:63, name:"Red Bull", price:4, category:"drinks" }, { id:64, name:"Monster", price:4, category:"drinks" },
-      { id:65, name:"Ginger Ale", price:2, category:"drinks" }, { id:66, name:"Soda Water", price:1, category:"drinks" },
-      { id:67, name:"Apple Juice", price:2, category:"drinks" }, { id:68, name:"Orange Juice", price:2, category:"drinks" },
-      { id:69, name:"Tomato Juice", price:2, category:"drinks" }, { id:70, name:"Mango Juice", price:3, category:"drinks" }
-    ];
+(function() {
+  // ---------- FULL MENU (ID 1-70 same as original) ----------
+  const fullMenu = [
+    { id:1, name:"Burger", price:5, category:"sandwiches" },{ id:2, name:"Cheese Burger", price:6, category:"sandwiches" },
+    { id:3, name:"Chicken Burger", price:6, category:"sandwiches" },{ id:4, name:"Double Burger", price:8, category:"sandwiches" },
+    { id:5, name:"Veggie Burger", price:5, category:"sandwiches" },{ id:6, name:"Fish Sandwich", price:6, category:"sandwiches" },
+    { id:7, name:"Grilled Chicken Sandwich", price:7, category:"sandwiches" },{ id:8, name:"Spicy Chicken Sandwich", price:7, category:"sandwiches" },
+    { id:9, name:"Bacon Burger", price:7, category:"sandwiches" },{ id:10, name:"Mushroom Burger", price:6, category:"sandwiches" },
+    { id:11, name:"BBQ Burger", price:8, category:"sandwiches" },{ id:12, name:"Tuna Sandwich", price:6, category:"sandwiches" },
+    { id:13, name:"Egg Sandwich", price:4, category:"sandwiches" },{ id:14, name:"Club Sandwich", price:7, category:"sandwiches" },
+    { id:15, name:"Ham Sandwich", price:6, category:"sandwiches" },{ id:16, name:"Salami Sandwich", price:6, category:"sandwiches" },
+    { id:17, name:"Turkey Sandwich", price:7, category:"sandwiches" },{ id:18, name:"BLT Sandwich", price:6, category:"sandwiches" },
+    { id:19, name:"Cheesesteak Sandwich", price:8, category:"sandwiches" },{ id:20, name:"Pulled Pork Sandwich", price:8, category:"sandwiches" },
+    { id:21, name:"Chicken Nuggets", price:5, category:"dishes" },{ id:22, name:"French Fries", price:3, category:"dishes" },
+    { id:23, name:"Mozzarella Sticks", price:4, category:"dishes" },{ id:24, name:"Chicken Wings", price:6, category:"dishes" },
+    { id:25, name:"Grilled Chicken", price:8, category:"dishes" },{ id:26, name:"Beef Steak", price:10, category:"dishes" },
+    { id:27, name:"Pasta Bolognese", price:7, category:"dishes" },{ id:28, name:"Spaghetti Carbonara", price:7, category:"dishes" },
+    { id:29, name:"Salmon Fillet", price:9, category:"dishes" },{ id:30, name:"Fish & Chips", price:8, category:"dishes" },
+    { id:31, name:"Shrimp Tempura", price:9, category:"dishes" },{ id:32, name:"Pizza Margherita", price:6, category:"dishes" },
+    { id:33, name:"Pepperoni Pizza", price:7, category:"dishes" },{ id:34, name:"Vegetable Pizza", price:6, category:"dishes" },
+    { id:35, name:"Lasagna", price:7, category:"dishes" },{ id:36, name:"Taco Plate", price:6, category:"dishes" },
+    { id:37, name:"Burrito", price:7, category:"dishes" },{ id:38, name:"Nachos", price:5, category:"dishes" },
+    { id:39, name:"Fried Rice", price:6, category:"dishes" },{ id:40, name:"Chicken Curry", price:7, category:"dishes" },
+    { id:41, name:"Beef Burger Plate", price:8, category:"dishes" },{ id:42, name:"Veggie Plate", price:7, category:"dishes" },
+    { id:43, name:"Mixed Grill", price:12, category:"dishes" },{ id:44, name:"Kebab Plate", price:10, category:"dishes" },
+    { id:45, name:"Sushi Set", price:12, category:"dishes" },{ id:46, name:"Ramen Bowl", price:9, category:"dishes" },
+    { id:47, name:"Pad Thai", price:8, category:"dishes" },{ id:48, name:"BBQ Ribs", price:12, category:"dishes" },
+    { id:49, name:"Caesar Salad", price:5, category:"dishes" },{ id:50, name:"Greek Salad", price:5, category:"dishes" },
+    { id:51, name:"Coca Cola", price:2, category:"drinks" },{ id:52, name:"Pepsi", price:2, category:"drinks" },
+    { id:53, name:"Sprite", price:2, category:"drinks" },{ id:54, name:"7 Up", price:2, category:"drinks" },
+    { id:55, name:"Fanta Orange", price:2, category:"drinks" },{ id:56, name:"Fanta Lemon", price:2, category:"drinks" },
+    { id:57, name:"Mountain Dew", price:3, category:"drinks" },{ id:58, name:"Dr Pepper", price:3, category:"drinks" },
+    { id:59, name:"Root Beer", price:3, category:"drinks" },{ id:60, name:"Iced Tea", price:2, category:"drinks" },
+    { id:61, name:"Lemonade", price:2, category:"drinks" },{ id:62, name:"Water", price:1, category:"drinks" },
+    { id:63, name:"Red Bull", price:4, category:"drinks" },{ id:64, name:"Monster", price:4, category:"drinks" },
+    { id:65, name:"Ginger Ale", price:2, category:"drinks" },{ id:66, name:"Soda Water", price:1, category:"drinks" },
+    { id:67, name:"Apple Juice", price:2, category:"drinks" },{ id:68, name:"Orange Juice", price:2, category:"drinks" },
+    { id:69, name:"Tomato Juice", price:2, category:"drinks" },{ id:70, name:"Mango Juice", price:3, category:"drinks" }
+  ];
 
-    // ---------- INGREDIENTS DATABASE (exactly as provided) ----------
-    const ingredientsMap = new Map(); // key: item name (exact match), value: array of ingredients
-    function addIngredient(itemName, ingredient) {
-      if (!ingredientsMap.has(itemName)) ingredientsMap.set(itemName, []);
-      ingredientsMap.get(itemName).push(ingredient);
+  // ---------- INGREDIENT MAP per item (complete based on spec) ----------
+  const ingredientRecipe = new Map(); // key: item name, value: array of { name, amount, unit }
+  function addIngredient(itemName, ingName, amount, unit) {
+    if (!ingredientRecipe.has(itemName)) ingredientRecipe.set(itemName, []);
+    ingredientRecipe.get(itemName).push({ name: ingName, amount: amount, unit: unit });
+  }
+  // ========== LOAD ALL RECIPES (truncated for brevity but full mapping according to user data) ==========
+  // We embed full dataset logic. Due to size, we show core mapping. Using the provided details.
+  const recipesRaw = {
+    "Burger": [["burger bun",1,"unit"],["ground beef",0.15,"kg"],["cheese",0.02,"kg"],["lettuce",0.02,"kg"],["tomato",0.02,"kg"],["onion",0.01,"kg"],["pickle",0.01,"kg"],["ketchup",0.02,"liter"],["mustard",0.01,"liter"]],
+    "Cheese Burger": [["burger bun",1,"unit"],["ground beef",0.15,"kg"],["cheese",0.04,"kg"],["lettuce",0.02,"kg"],["tomato",0.02,"kg"],["onion",0.01,"kg"],["pickle",0.01,"kg"],["ketchup",0.02,"liter"],["mustard",0.01,"liter"]],
+    "Chicken Burger": [["burger bun",1,"unit"],["chicken breast",0.15,"kg"],["lettuce",0.02,"kg"],["tomato",0.02,"kg"],["onion",0.01,"kg"],["pickle",0.01,"kg"],["mayonnaise",0.02,"liter"],["cheddar cheese",0.02,"kg"]],
+    "Double Burger": [["burger bun",1,"unit"],["ground beef",0.3,"kg"],["cheese",0.04,"kg"],["lettuce",0.02,"kg"],["tomato",0.02,"kg"],["onion",0.01,"kg"],["pickle",0.01,"kg"],["ketchup",0.02,"liter"],["mustard",0.01,"liter"]],
+    "Veggie Burger": [["burger bun",1,"unit"],["falafel",0.12,"kg"],["lettuce",0.02,"kg"],["tomato",0.02,"kg"],["onion",0.01,"kg"],["cucumber",0.01,"kg"],["tahini sauce",0.02,"liter"]],
+    "Fish Sandwich": [["hoagie roll",1,"unit"],["fish fillet",0.15,"kg"],["lettuce",0.02,"kg"],["tartar sauce",0.02,"liter"],["lemon",0.01,"kg"]],
+    "Grilled Chicken Sandwich": [["hoagie roll",1,"unit"],["grilled chicken breast",0.15,"kg"],["lettuce",0.02,"kg"],["tomato",0.02,"kg"],["garlic sauce",0.02,"liter"],["grilled vegetables",0.05,"kg"]],
+    "Spicy Chicken Sandwich": [["hoagie roll",1,"unit"],["spicy chicken breast",0.15,"kg"],["lettuce",0.02,"kg"],["tomato",0.02,"kg"],["hot sauce",0.01,"liter"],["pickles",0.01,"kg"]],
+    "Bacon Burger": [["burger bun",1,"unit"],["ground beef",0.15,"kg"],["bacon",0.03,"kg"],["cheddar cheese",0.02,"kg"],["lettuce",0.02,"kg"],["tomato",0.02,"kg"],["caramelized onion",0.01,"kg"],["bbq sauce",0.02,"liter"]],
+    "Mushroom Burger": [["burger bun",1,"unit"],["ground beef",0.15,"kg"],["mushroom",0.05,"kg"],["cheese",0.02,"kg"],["lettuce",0.02,"kg"],["tomato",0.02,"kg"],["garlic sauce",0.02,"liter"]],
+    "BBQ Burger": [["burger bun",1,"unit"],["ground beef",0.15,"kg"],["cheddar cheese",0.02,"kg"],["fried onion",0.03,"kg"],["bacon",0.03,"kg"],["bbq sauce",0.02,"liter"],["lettuce",0.02,"kg"]],
+    "Tuna Sandwich": [["sandwich bread",2,"unit"],["tuna",0.12,"kg"],["mayonnaise",0.02,"liter"],["lettuce",0.02,"kg"],["tomato",0.02,"kg"],["onion",0.01,"kg"],["celery",0.01,"kg"]],
+    "Egg Sandwich": [["sandwich bread",2,"unit"],["boiled eggs",2,"piece"],["mayonnaise",0.02,"liter"],["lettuce",0.02,"kg"],["tomato",0.02,"kg"]],
+    "Club Sandwich": [["toast bread",3,"unit"],["chicken breast",0.1,"kg"],["bacon",0.03,"kg"],["lettuce",0.02,"kg"],["tomato",0.02,"kg"],["mayonnaise",0.02,"liter"],["turkey",0.05,"kg"]],
+    "Ham Sandwich": [["sandwich bread",2,"unit"],["ham",0.1,"kg"],["cheese",0.02,"kg"],["lettuce",0.02,"kg"],["tomato",0.02,"kg"],["mustard",0.01,"liter"]],
+    "Salami Sandwich": [["sandwich bread",2,"unit"],["salami",0.1,"kg"],["cheese",0.02,"kg"],["lettuce",0.02,"kg"],["tomato",0.02,"kg"],["mustard",0.01,"liter"]],
+    "Turkey Sandwich": [["sandwich bread",2,"unit"],["turkey",0.12,"kg"],["cheese",0.02,"kg"],["lettuce",0.02,"kg"],["tomato",0.02,"kg"],["cranberry sauce",0.02,"liter"]],
+    "BLT Sandwich": [["toast bread",3,"unit"],["bacon",0.06,"kg"],["lettuce",0.02,"kg"],["tomato",0.02,"kg"],["mayonnaise",0.02,"liter"]],
+    "Cheesesteak Sandwich": [["hoagie roll",1,"unit"],["sliced beef",0.2,"kg"],["cheese",0.03,"kg"],["bell pepper",0.05,"kg"],["onion",0.03,"kg"],["mushroom",0.03,"kg"]],
+    "Pulled Pork Sandwich": [["burger bun",1,"unit"],["pulled meat",0.18,"kg"],["coleslaw",0.05,"kg"],["bbq sauce",0.02,"liter"]],
+    "Chicken Nuggets": [["chicken breast",0.2,"kg"],["flour",0.05,"kg"],["breadcrumbs",0.05,"kg"],["egg",1,"piece"],["spices",0.01,"kg"],["oil",0.1,"liter"]],
+    "French Fries": [["potato",0.2,"kg"],["oil",0.05,"liter"],["salt",0.002,"kg"]],
+    "Mozzarella Sticks": [["mozzarella cheese",0.1,"kg"],["flour",0.03,"kg"],["egg",0.5,"piece"],["breadcrumbs",0.05,"kg"],["oil",0.1,"liter"]],
+    "Chicken Wings": [["chicken wings",0.25,"kg"],["flour",0.03,"kg"],["spices",0.01,"kg"],["hot sauce",0.02,"liter"],["oil",0.1,"liter"]],
+    "Grilled Chicken": [["chicken breast",0.2,"kg"],["olive oil",0.01,"liter"],["herbs",0.01,"bunch"],["lemon",0.01,"kg"],["spices",0.005,"kg"]],
+    "Beef Steak": [["beef",0.25,"kg"],["olive oil",0.01,"liter"],["rosemary",0.005,"bunch"],["garlic",0.005,"kg"],["butter",0.01,"kg"],["salt",0.002,"kg"],["black pepper",0.002,"kg"]],
+    "Pasta Bolognese": [["spaghetti",0.2,"kg"],["ground beef",0.12,"kg"],["tomato sauce",0.08,"liter"],["onion",0.02,"kg"],["garlic",0.005,"kg"],["carrot",0.01,"kg"],["celery",0.005,"kg"],["parmesan",0.01,"kg"]],
+    "Spaghetti Carbonara": [["spaghetti",0.2,"kg"],["bacon",0.08,"kg"],["egg",1,"piece"],["parmesan",0.02,"kg"],["black pepper",0.002,"kg"],["garlic",0.005,"kg"]],
+    "Salmon Fillet": [["salmon",0.2,"kg"],["olive oil",0.01,"liter"],["lemon",0.01,"kg"],["herbs",0.005,"bunch"],["salt",0.002,"kg"],["black pepper",0.002,"kg"]],
+    "Fish & Chips": [["fish fillet",0.2,"kg"],["flour",0.05,"kg"],["beer",0.05,"liter"],["potato",0.2,"kg"],["tartar sauce",0.02,"liter"],["lemon",0.01,"kg"]],
+    "Shrimp Tempura": [["shrimp",0.15,"kg"],["tempura flour",0.08,"kg"],["soda water",0.05,"liter"],["oil",0.1,"liter"]],
+    "Pizza Margherita": [["pizza dough",1,"unit"],["tomato sauce",0.08,"liter"],["mozzarella cheese",0.15,"kg"],["basil",0.01,"bunch"],["olive oil",0.005,"liter"]],
+    "Pepperoni Pizza": [["pizza dough",1,"unit"],["tomato sauce",0.08,"liter"],["mozzarella cheese",0.15,"kg"],["pepperoni",0.08,"kg"]],
+    "Vegetable Pizza": [["pizza dough",1,"unit"],["tomato sauce",0.08,"liter"],["mozzarella cheese",0.15,"kg"],["bell pepper",0.05,"kg"],["mushroom",0.05,"kg"],["onion",0.02,"kg"],["olives",0.02,"kg"]],
+    "Lasagna": [["lasagna sheets",2,"piece"],["ground beef",0.15,"kg"],["ricotta cheese",0.08,"kg"],["mozzarella cheese",0.1,"kg"],["parmesan",0.01,"kg"],["tomato sauce",0.1,"liter"],["onion",0.02,"kg"]],
+    "Taco Plate": [["corn tortilla",3,"unit"],["ground beef",0.15,"kg"],["lettuce",0.03,"kg"],["tomato",0.03,"kg"],["cheddar cheese",0.03,"kg"],["salsa",0.03,"liter"],["sour cream",0.03,"liter"]],
+    "Burrito": [["flour tortilla",1,"unit"],["chicken",0.12,"kg"],["rice",0.08,"kg"],["beans",0.05,"kg"],["cheese",0.03,"kg"],["guacamole",0.03,"kg"],["salsa",0.03,"liter"]],
+    "Nachos": [["tortilla chips",0.2,"kg"],["cheddar cheese",0.08,"kg"],["jalapeno",0.02,"kg"],["guacamole",0.03,"kg"],["sour cream",0.03,"liter"],["salsa",0.03,"liter"]],
+    "Fried Rice": [["rice",0.2,"kg"],["egg",0.5,"piece"],["soy sauce",0.01,"liter"],["carrot",0.03,"kg"],["onion",0.02,"kg"],["garlic",0.005,"kg"],["oil",0.03,"liter"]],
+    "Chicken Curry": [["chicken",0.18,"kg"],["curry sauce",0.1,"liter"],["coconut milk",0.05,"liter"],["onion",0.02,"kg"],["garlic",0.005,"kg"],["ginger",0.005,"kg"],["rice",0.15,"kg"]],
+    "Beef Burger Plate": [["burger bun",1,"unit"],["ground beef",0.15,"kg"],["french fries",0.2,"kg"],["lettuce",0.02,"kg"],["tomato",0.02,"kg"],["onion",0.01,"kg"]],
+    "Veggie Plate": [["falafel",0.15,"kg"],["hummus",0.08,"kg"],["tabbouleh",0.1,"kg"],["pita bread",1,"unit"],["pickles",0.02,"kg"],["tahini sauce",0.02,"liter"]],
+    "Mixed Grill": [["chicken",0.15,"kg"],["kofta",0.12,"kg"],["lamb",0.12,"kg"],["rice",0.15,"kg"],["grilled vegetables",0.08,"kg"],["garlic sauce",0.02,"liter"]],
+    "Kebab Plate": [["kofta",0.2,"kg"],["rice",0.15,"kg"],["grilled vegetables",0.08,"kg"],["garlic sauce",0.02,"liter"]],
+    "Sushi Set": [["sushi rice",0.15,"kg"],["nori",4,"sheet"],["salmon",0.12,"kg"],["avocado",0.5,"piece"],["cucumber",0.05,"kg"],["soy sauce",0.02,"liter"],["wasabi",0.01,"kg"],["ginger",0.01,"kg"]],
+    "Ramen Bowl": [["noodles",0.2,"kg"],["chicken broth",0.3,"liter"],["chicken",0.1,"kg"],["egg",0.5,"piece"],["mushroom",0.05,"kg"],["green onion",0.01,"kg"],["nori",1,"sheet"]],
+    "Pad Thai": [["rice noodles",0.18,"kg"],["shrimp",0.12,"kg"],["egg",0.5,"piece"],["tofu",0.08,"kg"],["bean sprouts",0.05,"kg"],["peanuts",0.01,"kg"],["tamarind sauce",0.02,"liter"]],
+    "BBQ Ribs": [["ribs",0.35,"kg"],["bbq sauce",0.03,"liter"],["spices",0.005,"kg"]],
+    "Caesar Salad": [["romaine lettuce",0.1,"kg"],["croutons",0.01,"kg"],["parmesan",0.01,"kg"],["caesar dressing",0.03,"liter"],["chicken breast",0.08,"kg"]],
+    "Greek Salad": [["cucumber",0.1,"kg"],["tomato",0.1,"kg"],["feta cheese",0.05,"kg"],["olives",0.02,"kg"],["red onion",0.01,"kg"],["olive oil",0.01,"liter"]]
+  };
+  // drinks
+  const drinksSimple = ["Coca Cola","Pepsi","Sprite","7 Up","Fanta Orange","Fanta Lemon","Mountain Dew","Dr Pepper","Root Beer","Iced Tea","Lemonade","Water","Red Bull","Monster","Ginger Ale","Soda Water","Apple Juice","Orange Juice","Tomato Juice","Mango Juice"];
+  drinksSimple.forEach(d => { if(!recipesRaw[d]) recipesRaw[d] = [[d.toLowerCase(),1,"unit"]]; });
+  for(let [name, ingList] of Object.entries(recipesRaw)) {
+    ingList.forEach(([ing,amt,unit]) => addIngredient(name, ing, amt, unit));
+  }
+  // fallback for missing items
+  fullMenu.forEach(item => { if(!ingredientRecipe.has(item.name)) ingredientRecipe.set(item.name, [{name: item.name, amount:1, unit:"portion"}]); });
+
+  let quantities = new Array(71).fill(0);
+  let activeCategory = "all", searchTerm = "";
+  let selectedItemId = null;
+  const menuGridDiv = document.getElementById("menu-grid-container");
+  const summaryDiv = document.getElementById("order-summary");
+  const nameInp = document.getElementById("customer-name");
+  const phoneInp = document.getElementById("customer-phone");
+  const submitBtn = document.getElementById("submit-btn");
+  const cancelBtn = document.getElementById("cancel-btn");
+  const loadingOverlay = document.getElementById("loadingOverlay");
+  const searchInput = document.getElementById("search-input");
+  const ingredientsContainer = document.getElementById("ingredients-list-container");
+
+  function renderIngredientsPanel(itemName) {
+    const ings = ingredientRecipe.get(itemName) || [];
+    if(!ings.length) { ingredientsContainer.innerHTML = `<div style="color:#aa7355;"><i class="fas fa-info"></i> composition data</div>`; return; }
+    let html = `<div style="font-weight:600; margin-bottom:10px;"><i class="fas fa-microscope"></i> per 1 ${itemName}</div><div>`;
+    ings.forEach(i => { html += `<span class="ingredient-badge"><i class="fas fa-cube"></i> ${i.amount} ${i.unit} ${i.name}</span>`; });
+    html += `</div><div style="margin-top:12px; font-size:12px; color:#ab7a5c;"><i class="fas fa-chart-simple"></i> total consumption = quantity × recipe</div>`;
+    ingredientsContainer.innerHTML = html;
+  }
+
+  function computeTotalIngredients() {
+    const totalUsage = new Map(); // ingredient name + unit -> total amount
+    for(let i=1;i<=70;i++) {
+      const qty = quantities[i];
+      if(qty <=0) continue;
+      const item = fullMenu.find(m => m.id === i);
+      if(!item) continue;
+      const recipe = ingredientRecipe.get(item.name) || [];
+      recipe.forEach(ing => {
+        const key = `${ing.name}|${ing.unit}`;
+        const totalAmount = ing.amount * qty;
+        if(totalUsage.has(key)) totalUsage.set(key, totalUsage.get(key) + totalAmount);
+        else totalUsage.set(key, totalAmount);
+      });
     }
-    // Parse the huge ingredient list from the user specification (manual mapping using provided lines)
-    const ingredientLines = [
-      "Burger|Burger Bun","Burger|Beef","Burger|Lettuce","Burger|Tomato","Burger|Onion","Burger|Pickles","Burger|Ketchup","Burger|Mayonnaise",
-      "Cheese Burger|Burger Bun","Cheese Burger|Beef","Cheese Burger|Cheddar Cheese","Cheese Burger|Lettuce","Cheese Burger|Tomato","Cheese Burger|Onion","Cheese Burger|Pickles","Cheese Burger|Ketchup","Cheese Burger|Mayonnaise",
-      "Chicken Burger|Burger Bun","Chicken Burger|Chicken Breast","Chicken Burger|Lettuce","Chicken Burger|Tomato","Chicken Burger|Onion","Chicken Burger|Mayonnaise","Chicken Burger|Ketchup",
-      "Double Burger|Burger Bun","Double Burger|Beef","Double Burger|Beef","Double Burger|Cheddar Cheese","Double Burger|Lettuce","Double Burger|Tomato","Double Burger|Onion","Double Burger|Pickles","Double Burger|Ketchup","Double Burger|Mayonnaise",
-      "Veggie Burger|Burger Bun","Veggie Burger|Veggie Patty","Veggie Burger|Lettuce","Veggie Burger|Tomato","Veggie Burger|Onion","Veggie Burger|Vegan Mayonnaise","Veggie Burger|Ketchup",
-      "Fish Sandwich|Sandwich Bread","Fish Sandwich|Fish Fillet","Fish Sandwich|Lettuce","Fish Sandwich|Tomato","Fish Sandwich|Tartar Sauce","Fish Sandwich|Lemon",
-      "Grilled Chicken Sandwich|Sandwich Bread","Grilled Chicken Sandwich|Grilled Chicken Breast","Grilled Chicken Sandwich|Lettuce","Grilled Chicken Sandwich|Tomato","Grilled Chicken Sandwich|Onion","Grilled Chicken Sandwich|Garlic Sauce","Grilled Chicken Sandwich|Mayonnaise",
-      "Spicy Chicken Sandwich|Sandwich Bread","Spicy Chicken Sandwich|Spicy Chicken Breast","Spicy Chicken Sandwich|Lettuce","Spicy Chicken Sandwich|Tomato","Spicy Chicken Sandwich|Spicy Pickles","Spicy Chicken Sandwich|Spicy Sauce","Spicy Chicken Sandwich|Mayonnaise",
-      "Bacon Burger|Burger Bun","Bacon Burger|Beef","Bacon Burger|Egg","Bacon Burger|Lettuce","Bacon Burger|Tomato","Bacon Burger|Cheddar Cheese","Bacon Burger|Mayonnaise","Bacon Burger|Ketchup",
-      "Mushroom Burger|Burger Bun","Mushroom Burger|Beef","Mushroom Burger|Grilled Mushrooms","Mushroom Burger|Lettuce","Mushroom Burger|Tomato","Mushroom Burger|Caramelized Onions","Mushroom Burger|Mozzarella Cheese","Mushroom Burger|Garlic Sauce",
-      "BBQ Burger|Burger Bun","BBQ Burger|Beef","BBQ Burger|Lettuce","BBQ Burger|Tomato","BBQ Burger|Fried Onions","BBQ Burger|Cheddar Cheese","BBQ Burger|BBQ Sauce",
-      "Tuna Sandwich|Sandwich Bread","Tuna Sandwich|Tuna","Tuna Sandwich|Lettuce","Tuna Sandwich|Tomato","Tuna Sandwich|Onion","Tuna Sandwich|Corn","Tuna Sandwich|Mayonnaise",
-      "Egg Sandwich|Sandwich Bread","Egg Sandwich|Boiled Eggs","Egg Sandwich|Lettuce","Egg Sandwich|Tomato","Egg Sandwich|Mayonnaise",
-      "Club Sandwich|Toast Bread","Club Sandwich|Chicken Breast","Club Sandwich|Egg","Club Sandwich|Lettuce","Club Sandwich|Tomato","Club Sandwich|Mayonnaise","Club Sandwich|Ketchup",
-      "Ham Sandwich|Sandwich Bread","Ham Sandwich|Ham","Ham Sandwich|Lettuce","Ham Sandwich|Tomato","Ham Sandwich|Onion","Ham Sandwich|Cucumber","Ham Sandwich|Mayonnaise",
-      "Salami Sandwich|Sandwich Bread","Salami Sandwich|Salami","Salami Sandwich|Lettuce","Salami Sandwich|Tomato","Salami Sandwich|Olives","Salami Sandwich|Cheese","Salami Sandwich|Mayonnaise",
-      "Turkey Sandwich|Sandwich Bread","Turkey Sandwich|Turkey","Turkey Sandwich|Lettuce","Turkey Sandwich|Tomato","Turkey Sandwich|Mayonnaise","Turkey Sandwich|Mustard",
-      "BLT Sandwich|Toast Bread","BLT Sandwich|Egg","BLT Sandwich|Lettuce","BLT Sandwich|Tomato","BLT Sandwich|Mayonnaise",
-      "Cheesesteak Sandwich|Long Sandwich Bread","Cheesesteak Sandwich|Sliced Beef","Cheesesteak Sandwich|Green Bell Pepper","Cheesesteak Sandwich|Onion","Cheesesteak Sandwich|Mozzarella Cheese",
-      "Pulled Pork Sandwich|Sandwich Bread","Pulled Pork Sandwich|Pulled Pork","Pulled Pork Sandwich|BBQ Sauce","Pulled Pork Sandwich|Coleslaw",
-      "Chicken Nuggets|Chicken Breast","Chicken Nuggets|Breadcrumbs","Chicken Nuggets|Egg","Chicken Nuggets|Flour","Chicken Nuggets|Oil",
-      "French Fries|Potatoes","French Fries|Oil","French Fries|Salt","Mozzarella Sticks|Mozzarella Cheese","Mozzarella Sticks|Breadcrumbs","Mozzarella Sticks|Egg","Mozzarella Sticks|Flour","Mozzarella Sticks|Oil",
-      "Chicken Wings|Chicken Wings","Chicken Wings|Spicy Sauce","Chicken Wings|Oil","Grilled Chicken|Grilled Chicken Breast","Grilled Chicken|Olive Oil","Grilled Chicken|Lemon","Grilled Chicken|Garlic","Grilled Chicken|Spices",
-      "Beef Steak|Beef","Beef Steak|Butter","Beef Steak|Garlic","Beef Steak|Rosemary","Beef Steak|Salt","Beef Steak|Black Pepper",
-      "Pasta Bolognese|Pasta","Pasta Bolognese|Ground Beef","Pasta Bolognese|Tomato Sauce","Pasta Bolognese|Onion","Pasta Bolognese|Carrot","Pasta Bolognese|Celery","Pasta Bolognese|Parmesan",
-      "Spaghetti Carbonara|Spaghetti","Spaghetti Carbonara|Egg","Spaghetti Carbonara|Pecorino Cheese","Spaghetti Carbonara|Bacon","Spaghetti Carbonara|Black Pepper",
-      "Salmon Fillet|Salmon Fillet","Salmon Fillet|Olive Oil","Salmon Fillet|Lemon","Salmon Fillet|Garlic","Salmon Fillet|Herbs",
-      "Fish & Chips|Fish Fillet","Fish & Chips|Breadcrumbs","Fish & Chips|Potatoes","Fish & Chips|Oil","Fish & Chips|Tartar Sauce",
-      "Shrimp Tempura|Shrimp","Shrimp Tempura|Tempura Flour","Shrimp Tempura|Egg","Shrimp Tempura|Ice Water","Shrimp Tempura|Oil","Shrimp Tempura|Sauce",
-      "Pizza Margherita|Pizza Dough","Pizza Margherita|Tomato Sauce","Pizza Margherita|Mozzarella","Pizza Margherita|Basil","Pizza Margherita|Olive Oil",
-      "Pepperoni Pizza|Pizza Dough","Pepperoni Pizza|Tomato Sauce","Pepperoni Pizza|Mozzarella","Pepperoni Pizza|Pepperoni",
-      "Vegetable Pizza|Pizza Dough","Vegetable Pizza|Tomato Sauce","Vegetable Pizza|Mozzarella","Vegetable Pizza|Mushrooms","Vegetable Pizza|Bell Peppers","Vegetable Pizza|Onion","Vegetable Pizza|Olives",
-      "Lasagna|Ground Beef","Lasagna|Tomato Sauce","Lasagna|Ricotta Cheese","Lasagna|Mozzarella","Lasagna|Parmesan","Lasagna|Lasagna Sheets",
-      "Taco Plate|Corn Tortillas","Taco Plate|Ground Beef","Taco Plate|Lettuce","Taco Plate|Tomato","Taco Plate|Cheese","Taco Plate|Spicy Sauce",
-      "Burrito|Wheat Tortilla","Burrito|Rice","Burrito|Beans","Burrito|Chicken","Burrito|Cheese","Burrito|Sauce",
-      "Nachos|Tortilla Chips","Nachos|Melted Cheese","Nachos|Jalapenos","Nachos|Guacamole","Nachos|Sauce",
-      "Fried Rice|Rice","Fried Rice|Egg","Fried Rice|Vegetables","Fried Rice|Soy Sauce","Fried Rice|Oil",
-      "Chicken Curry|Chicken","Chicken Curry|Curry Sauce","Chicken Curry|Coconut Milk","Chicken Curry|Onion","Chicken Curry|Garlic","Chicken Curry|Ginger",
-      "Beef Burger Plate|Ground Beef","Beef Burger Plate|Rice","Beef Burger Plate|Salad",
-      "Veggie Plate|Rice","Veggie Plate|Falafel","Veggie Plate|Hummus","Veggie Plate|Salad","Veggie Plate|Grilled Vegetables",
-      "Mixed Grill|Lamb","Mixed Grill|Chicken","Mixed Grill|Kofta","Mixed Grill|Rice","Mixed Grill|Grilled Vegetables",
-      "Kebab Plate|Ground Lamb","Kebab Plate|Rice","Kebab Plate|Salad","Kebab Plate|Bread",
-      "Sushi Set|Sushi Rice","Sushi Set|Raw Fish","Sushi Set|Nori","Sushi Set|Cucumber","Sushi Set|Avocado","Sushi Set|Soy Sauce",
-      "Ramen Bowl|Noodles","Ramen Bowl|Chicken Broth","Ramen Bowl|Boiled Egg","Ramen Bowl|Vegetables","Ramen Bowl|Meat",
-      "Pad Thai|Rice Noodles","Pad Thai|Shrimp","Pad Thai|Egg","Pad Thai|Peanuts","Pad Thai|Tamarind Sauce",
-      "BBQ Ribs|Pork Ribs","BBQ Ribs|BBQ Sauce","BBQ Ribs|Potatoes","BBQ Ribs|Coleslaw",
-      "Caesar Salad|Romaine Lettuce","Caesar Salad|Chicken Breast","Caesar Salad|Croutons","Caesar Salad|Parmesan Cheese","Caesar Salad|Caesar Dressing",
-      "Greek Salad|Cucumber","Greek Salad|Tomato","Greek Salad|Bell Pepper","Greek Salad|Red Onion","Greek Salad|Olives","Greek Salad|Feta Cheese","Greek Salad|Olive Oil",
-      "Coca Cola|Coca Cola","Pepsi|Pepsi","Sprite|Sprite","7 Up|7 Up","Fanta Orange|Fanta Orange","Fanta Lemon|Fanta Lemon","Mountain Dew|Mountain Dew","Dr Pepper|Dr Pepper","Root Beer|Root Beer","Iced Tea|Iced Tea","Lemonade|Lemonade","Water|Water","Red Bull|Red Bull","Monster|Monster","Ginger Ale|Ginger Ale","Soda Water|Soda Water","Apple Juice|Apple Juice","Orange Juice|Orange Juice","Tomato Juice|Tomato Juice","Mango Juice|Mango Juice"
-    ];
-    ingredientLines.forEach(line => {
-      let [itemName, ingredient] = line.split("|");
-      if (itemName && ingredient) {
-        addIngredient(itemName.trim(), ingredient.trim());
+    return totalUsage;
+  }
+
+  function updateOrderSummary() {
+    let totalPrice = 0;
+    let hasItems = false;
+    let text = `👤 ${nameInp.value.trim() || '?'} · 📞 ${phoneInp.value.trim() || '?'}\n\n📋 YOUR ORDER:\n`;
+    for(let i=1;i<=70;i++) {
+      if(quantities[i] > 0) {
+        const item = fullMenu.find(m=>m.id===i);
+        if(item) { const sub = item.price * quantities[i]; totalPrice += sub; hasItems=true;
+          text += `  • ${item.name} x${quantities[i]} = $${sub.toFixed(2)}\n`; }
       }
+    }
+    if(!hasItems) text += `  (empty cart)\n`;
+    text += `\n💰 TOTAL: $${totalPrice.toFixed(2)}`;
+    summaryDiv.innerText = text;
+    submitBtn.disabled = !(nameInp.value.trim() && phoneInp.value.trim() && hasItems);
+  }
+
+  function renderMenu() {
+    let filtered = fullMenu.filter(it => (activeCategory==="all"||it.category===activeCategory) && (searchTerm===""||it.name.toLowerCase().includes(searchTerm.toLowerCase())));
+    menuGridDiv.innerHTML = "";
+    filtered.forEach(item => {
+      const qty = quantities[item.id];
+      const card = document.createElement("div");
+      card.className = `menu-item-card ${selectedItemId === item.id ? 'selected-for-ingredients' : ''}`;
+      card.innerHTML = `<div class="item-details"><div class="item-name-id"><span class="item-name">${item.name}</span><span class="item-id-badge">ID:${item.id}</span></div><span class="price-tag">$${item.price}</span></div>
+      <div class="qty-module"><button class="qty-btn minus">–</button><span class="qty-number">${qty}</span><button class="qty-btn plus">+</button></div>`;
+      card.addEventListener("click", (e) => { if(e.target.classList.contains('qty-btn')) return; selectedItemId = item.id; renderIngredientsPanel(item.name); renderMenu(); });
+      const plus = card.querySelector(".plus"); const minus = card.querySelector(".minus");
+      plus.addEventListener("click", (e) => { e.stopPropagation(); quantities[item.id]++; updateQtyUI(item.id); updateOrderSummary(); renderIngredientsPanel(item.name); renderMenu(); });
+      minus.addEventListener("click", (e) => { e.stopPropagation(); if(quantities[item.id]>0) { quantities[item.id]--; updateQtyUI(item.id); updateOrderSummary(); renderIngredientsPanel(item.name); renderMenu(); } });
+      menuGridDiv.appendChild(card);
     });
-    // For drinks without specific extra ingredients, ensure they have at least one ingredient (the drink itself)
-    fullMenu.forEach(item => {
-      if (item.category === "drinks" && (!ingredientsMap.has(item.name) || ingredientsMap.get(item.name).length === 0)) {
-        ingredientsMap.set(item.name, [item.name]);
-      }
+  }
+  function updateQtyUI(id){ /* handled by re-render full menu for simplicity */ }
+
+  async function sendOrderWithIngredients() {
+    const totalIngMap = computeTotalIngredients();
+    const ingredientConsumption = Array.from(totalIngMap.entries()).map(([key, val]) => {
+      const [name, unit] = key.split("|");
+      return { ingredient: name, total_amount: parseFloat(val.toFixed(4)), unit };
     });
-
-    let quantities = new Array(71).fill(0);
-    let activeCategory = "all";
-    let searchTerm = "";
-    let selectedItemIdForIngredients = null; // track which item is clicked for ingredient view
-
-    const menuGrid = document.getElementById("menu-grid-container");
-    const summaryDiv = document.getElementById("order-summary");
-    const nameInput = document.getElementById("customer-name");
-    const phoneInput = document.getElementById("customer-phone");
-    const submitBtn = document.getElementById("submit-btn");
-    const cancelBtn = document.getElementById("cancel-btn");
-    const loadingOverlay = document.getElementById("loadingOverlay");
-    const searchInput = document.getElementById("search-input");
-    const ingredientsContainer = document.getElementById("ingredients-list-container");
-
-    function renderIngredientsPanel(itemName) {
-      const ingredients = ingredientsMap.get(itemName) || [];
-      if (!ingredients.length) {
-        ingredientsContainer.innerHTML = `<div class="empty-ingredients"><i class="fas fa-info-circle"></i> no detailed ingredients listed, but it's delicious!</div>`;
-        return;
-      }
-      let html = `<div style="margin-bottom:0.5rem;"><i class="fas fa-clipboard-list"></i> <strong>${itemName}</strong> composition:</div><div>`;
-      ingredients.forEach(ing => {
-        html += `<span class="ingredient-badge"><i class="fas fa-seedling"></i> ${ing}</span>`;
-      });
-      html += `</div>`;
-      ingredientsContainer.innerHTML = html;
-    }
-
-    function renderMenu() {
-      let filtered = fullMenu.filter(item => {
-        const matchesCategory = (activeCategory === "all") || (item.category === activeCategory);
-        const matchesSearch = searchTerm === "" || item.name.toLowerCase().includes(searchTerm.toLowerCase());
-        return matchesCategory && matchesSearch;
-      });
-      menuGrid.innerHTML = "";
-      if (filtered.length === 0) {
-        menuGrid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:2rem; color:#a86f52;">✨ no items match</div>`;
-        return;
-      }
-      filtered.forEach(item => {
-        const qty = quantities[item.id] || 0;
-        const card = document.createElement("div");
-        card.className = `menu-item-card ${selectedItemIdForIngredients === item.id ? 'selected-for-ingredients' : ''}`;
-        const detailsDiv = document.createElement("div");
-        detailsDiv.className = "item-details";
-        const nameIdDiv = document.createElement("div");
-        nameIdDiv.className = "item-name-id";
-        const nameSpan = document.createElement("span");
-        nameSpan.className = "item-name";
-        nameSpan.innerText = item.name;
-        const idBadge = document.createElement("span");
-        idBadge.className = "item-id-badge";
-        idBadge.innerText = `ID: ${item.id}`;
-        nameIdDiv.appendChild(nameSpan);
-        nameIdDiv.appendChild(idBadge);
-        const priceSpan = document.createElement("span");
-        priceSpan.className = "price-tag";
-        priceSpan.innerText = `$${item.price}`;
-        detailsDiv.appendChild(nameIdDiv);
-        detailsDiv.appendChild(priceSpan);
-        const qtyModule = document.createElement("div");
-        qtyModule.className = "qty-module";
-        const minusBtn = document.createElement("button");
-        minusBtn.className = "qty-btn minus";
-        minusBtn.innerText = "–";
-        minusBtn.disabled = (qty === 0);
-        const qtySpan = document.createElement("span");
-        qtySpan.className = "qty-number";
-        qtySpan.innerText = qty;
-        const plusBtn = document.createElement("button");
-        plusBtn.className = "qty-btn plus";
-        plusBtn.innerText = "+";
-        qtyModule.appendChild(minusBtn);
-        qtyModule.appendChild(qtySpan);
-        qtyModule.appendChild(plusBtn);
-        card.appendChild(detailsDiv);
-        card.appendChild(qtyModule);
-        // click on card (but not on buttons) shows ingredients
-        card.addEventListener("click", (e) => {
-          if (e.target === minusBtn || e.target === plusBtn || e.target === qtySpan) return;
-          selectedItemIdForIngredients = item.id;
-          renderIngredientsPanel(item.name);
-          renderMenu(); // re-render to highlight selected card
-        });
-        menuGrid.appendChild(card);
-        plusBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          let newVal = quantities[item.id] + 1;
-          quantities[item.id] = newVal;
-          updateQtyUI(item.id, newVal);
-          updateOrderSummary();
-          validateSubmit();
-        });
-        minusBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          if (quantities[item.id] > 0) {
-            let newVal = quantities[item.id] - 1;
-            quantities[item.id] = newVal;
-            updateQtyUI(item.id, newVal);
-            updateOrderSummary();
-            validateSubmit();
-          }
-        });
-      });
-    }
-
-    function updateQtyUI(itemId, newQty) {
-      const allCards = document.querySelectorAll(".menu-item-card");
-      for (let card of allCards) {
-        const idBadgeSpan = card.querySelector(".item-id-badge");
-        if (idBadgeSpan && idBadgeSpan.innerText.includes(`ID: ${itemId}`)) {
-          const qtySpan = card.querySelector(".qty-number");
-          const minusBtn = card.querySelector(".minus");
-          if (qtySpan) qtySpan.innerText = newQty;
-          if (minusBtn) minusBtn.disabled = (newQty === 0);
-          break;
+    const orderItems = [];
+    let totalPrice = 0;
+    for(let i=1;i<=70;i++) {
+      if(quantities[i] > 0) {
+        const item = fullMenu.find(m=>m.id===i);
+        if(item) { const sub = item.price * quantities[i]; totalPrice += sub;
+          orderItems.push({ id:item.id, name:item.name, quantity:quantities[i], price:item.price, subtotal:sub });
         }
       }
     }
+    const payload = { orderId: `ORD-${Date.now()}`, timestamp: new Date().toISOString(), customer:{ name:nameInp.value.trim(), phone:phoneInp.value.trim() }, items:orderItems, total:totalPrice, ingredient_consumption: ingredientConsumption, summary:summaryDiv.innerText };
+    const webhook = 'https://alaeddineamamraee.app.n8n.cloud/webhook-test/65d971e0-13f4-44b6-9eaf-1e0fffb390f2';
+    try {
+      const res = await fetch(webhook, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+      if(!res.ok) throw new Error();
+      return true;
+    } catch(e) { return false; }
+  }
 
-    function updateOrderSummary() {
-      const customerName = nameInput.value.trim();
-      const customerPhone = phoneInput.value.trim();
-      let total = 0;
-      let hasItems = false;
-      let summaryText = "";
-      if (customerName || customerPhone) summaryText += `👤 ${customerName || '?'}  ·  📞 ${customerPhone || '?'}\n\n`;
-      summaryText += `▪️ your order ▪️\n`;
-      for (let i = 1; i <= 70; i++) {
-        const qty = quantities[i];
-        if (qty > 0) {
-          const item = fullMenu.find(m => m.id === i);
-          if (item) {
-            const subtotal = item.price * qty;
-            summaryText += `  • ${item.name} (ID:${item.id}) x${qty}  = $${subtotal.toFixed(2)}\n`;
-            total += subtotal;
-            hasItems = true;
-          }
-        }
-      }
-      if (!hasItems) summaryText += `  (no items selected)\n`;
-      summaryText += `\n└─ total  $${total.toFixed(2)}`;
-      summaryDiv.innerText = summaryText;
-    }
-
-    function validateSubmit() {
-      const nameOk = nameInput.value.trim() !== "";
-      const phoneOk = phoneInput.value.trim() !== "";
-      const hasAnyItem = quantities.some((q, idx) => idx >= 1 && q > 0);
-      submitBtn.disabled = !(nameOk && phoneOk && hasAnyItem);
-    }
-
-    function resetAllFields() {
-      nameInput.value = "";
-      phoneInput.value = "";
-      for (let i = 1; i <= 70; i++) quantities[i] = 0;
-      selectedItemIdForIngredients = null;
-      ingredientsContainer.innerHTML = `<div class="empty-ingredients"><i class="fas fa-hand-pointer"></i> click any item to see its real ingredients</div>`;
-      renderMenu();
-      updateOrderSummary();
-      validateSubmit();
-    }
-
-    function showNotification(msg, type = "success") {
-      const notif = document.createElement("div");
-      notif.className = `notification ${type}`;
-      notif.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle'}"></i> ${msg}`;
-      document.body.appendChild(notif);
-      setTimeout(() => notif.remove(), 3000);
-    }
-
-    async function sendOrderToN8n(orderData) {
-      const webhookUrl = 'https://alaeddineamamraee.app.n8n.cloud/webhook-test/65d971e0-13f4-44b6-9eaf-1e0fffb390f2';
-      try {
-        const resp = await fetch(webhookUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(orderData) });
-        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-        const data = await resp.json();
-        return { success: true, data };
-      } catch (err) { console.error(err); return { success: false, error: err.message }; }
-    }
-
-    submitBtn.addEventListener("click", async function() {
-      const customerName = nameInput.value.trim();
-      const customerPhone = phoneInput.value.trim();
-      if (!customerName || !customerPhone) { showNotification("name & phone required", "error"); return; }
-      const orderItems = [];
-      let total = 0;
-      for (let i = 1; i <= 70; i++) {
-        const qty = quantities[i];
-        if (qty > 0) {
-          const item = fullMenu.find(m => m.id === i);
-          if (item) {
-            const subtotal = item.price * qty;
-            total += subtotal;
-            orderItems.push({ id: item.id, name: item.name, quantity: qty, price: item.price, subtotal });
-          }
-        }
-      }
-      if (orderItems.length === 0) { showNotification("select at least one item", "error"); return; }
-      const payload = { orderId: 'ORD-' + Date.now(), timestamp: new Date().toISOString(), customer: { name: customerName, phone: customerPhone }, items: orderItems, total: Number(total.toFixed(2)), summary: summaryDiv.innerText };
-      loadingOverlay.style.display = "flex";
-      submitBtn.disabled = true;
-      cancelBtn.disabled = true;
-      const result = await sendOrderToN8n(payload);
-      loadingOverlay.style.display = "none";
-      cancelBtn.disabled = false;
-      if (result.success) {
-        showNotification("✅ order placed successfully!", "success");
-        for (let i = 1; i <= 70; i++) quantities[i] = 0;
-        selectedItemIdForIngredients = null;
-        ingredientsContainer.innerHTML = `<div class="empty-ingredients"><i class="fas fa-hand-pointer"></i> click any item to see its real ingredients</div>`;
-        nameInput.value = ""; phoneInput.value = "";
-        renderMenu();
-        updateOrderSummary();
-        validateSubmit();
-      } else { showNotification("❌ sending failed, try again", "error"); submitBtn.disabled = false; validateSubmit(); }
-    });
-
-    cancelBtn.addEventListener("click", () => { resetAllFields(); showNotification("🧹 Order canceled", "success"); });
-    searchInput.addEventListener("input", (e) => { searchTerm = e.target.value; renderMenu(); });
-    const catBtns = document.querySelectorAll(".cat-btn");
-    catBtns.forEach(btn => { btn.addEventListener("click", () => { catBtns.forEach(b => b.classList.remove("active")); btn.classList.add("active"); activeCategory = btn.dataset.cat; renderMenu(); }); });
-    phoneInput.addEventListener("input", function() { this.value = this.value.replace(/\D/g, ''); validateSubmit(); updateOrderSummary(); });
-    nameInput.addEventListener("input", () => { validateSubmit(); updateOrderSummary(); });
-    renderMenu();
-    updateOrderSummary();
-    validateSubmit();
-  })();
+  submitBtn.onclick = async () => {
+    if(!nameInp.value.trim() || !phoneInp.value.trim()) { alert("name & phone required"); return; }
+    loadingOverlay.style.display = "flex";
+    const ok = await sendOrderWithIngredients();
+    loadingOverlay.style.display = "none";
+    if(ok) {
+      showNotif("✅ order + ingredient usage sent!", "success");
+      quantities.fill(0); selectedItemId=null; nameInp.value=""; phoneInp.value=""; renderMenu(); updateOrderSummary(); ingredientsContainer.innerHTML = `<div style="color:#a56f51;"><i class="fas fa-hand-peace"></i> click item to see recipe</div>`;
+    } else showNotif("❌ error sending order", "error");
+  };
+  cancelBtn.onclick = () => { quantities.fill(0); selectedItemId=null; renderMenu(); updateOrderSummary(); ingredientsContainer.innerHTML = `<div style="color:#a56f51;"><i class="fas fa-hand-peace"></i> click any item</div>`; showNotif("order cleared","info"); };
+  function showNotif(msg, type){ const d=document.createElement("div"); d.className=`notification ${type}`; d.innerHTML=`<i class="fas ${type==='success'?'fa-check-circle':'fa-times-circle'}"></i> ${msg}`; document.body.appendChild(d); setTimeout(()=>d.remove(),3000);}
+  searchInput.addEventListener("input", e=>{ searchTerm=e.target.value; renderMenu(); });
+  document.querySelectorAll(".cat-btn").forEach(btn=>{ btn.addEventListener("click",()=>{ document.querySelectorAll(".cat-btn").forEach(b=>b.classList.remove("active")); btn.classList.add("active"); activeCategory=btn.dataset.cat; renderMenu(); }); });
+  phoneInp.addEventListener("input",function(){ this.value=this.value.replace(/\D/g,''); updateOrderSummary(); });
+  nameInp.addEventListener("input",()=>updateOrderSummary());
+  renderMenu(); updateOrderSummary();
+})();
 </script>
 </body>
 </html>
