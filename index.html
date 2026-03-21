@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>flavor · order studio</title>
+  <title>flavor · ingredient studio</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     * {
@@ -22,9 +22,8 @@
       padding: 2rem 1rem;
     }
 
-    /* main card */
     .order-card {
-      max-width: 1280px;
+      max-width: 1400px;
       width: 100%;
       background: #ffffffec;
       backdrop-filter: blur(2px);
@@ -34,7 +33,6 @@
       border: 1px solid rgba(245, 222, 205, 0.7);
     }
 
-    /* header & brand */
     .brand {
       display: flex;
       align-items: center;
@@ -61,7 +59,6 @@
       font-weight: 500;
     }
 
-    /* user fields */
     .user-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -82,7 +79,6 @@
       background: white;
     }
 
-    /* search & filter bar */
     .search-filter-bar {
       display: flex;
       flex-wrap: wrap;
@@ -107,7 +103,6 @@
     }
     .search-box i {
       color: #c48160;
-      font-size: 1.1rem;
     }
     .search-box input {
       border: none;
@@ -120,7 +115,6 @@
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      background: transparent;
     }
     .cat-btn {
       background: #ede3db;
@@ -141,20 +135,71 @@
       color: white;
       box-shadow: 0 6px 12px -8px rgba(196, 75, 75, 0.4);
     }
-    .cat-btn i {
-      font-size: 0.9rem;
-    }
 
-    /* menu grid — modern, compact, easy to scroll */
+    /* two columns layout: left menu grid, right ingredients panel */
+    .split-layout {
+      display: flex;
+      gap: 1.8rem;
+      flex-wrap: wrap;
+    }
+    .menu-section {
+      flex: 2;
+      min-width: 280px;
+    }
+    .ingredients-section {
+      flex: 1.2;
+      min-width: 260px;
+      background: #fef9f4;
+      border-radius: 32px;
+      border: 1px solid #f3e2d4;
+      padding: 1.2rem;
+      height: fit-content;
+      position: sticky;
+      top: 1rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.02);
+    }
+    .ingredients-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 2px dashed #e7cfc0;
+      padding-bottom: 0.7rem;
+      margin-bottom: 1rem;
+    }
+    .ingredients-header i {
+      font-size: 1.6rem;
+      color: #c9724c;
+    }
+    .ingredients-header h3 {
+      font-weight: 700;
+      color: #4a2c1e;
+    }
+    .ingredient-badge {
+      background: #ffffff;
+      border-radius: 60px;
+      padding: 0.35rem 1rem;
+      margin: 0.3rem 0.4rem;
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #794f38;
+      border: 1px solid #f0dbcE;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    }
+    .empty-ingredients {
+      color: #b8886c;
+      font-style: italic;
+      padding: 1rem 0;
+      text-align: center;
+    }
     .menu-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 1rem;
-      max-height: 480px;
+      max-height: 520px;
       overflow-y: auto;
       padding-right: 6px;
-      margin-bottom: 1.2rem;
-      border-radius: 28px;
+      margin-bottom: 0.5rem;
     }
     .menu-grid::-webkit-scrollbar {
       width: 6px;
@@ -168,19 +213,23 @@
       border-radius: 10px;
     }
 
-    /* item card */
     .menu-item-card {
       background: #ffffffea;
       border-radius: 28px;
       border: 1px solid #f5e2d4;
       padding: 0.75rem 1rem;
-      transition: 0.1s ease;
+      transition: all 0.15s ease;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 8px;
-      backdrop-filter: blur(2px);
+      cursor: pointer;
+    }
+    .menu-item-card.selected-for-ingredients {
+      background: #fff3ea;
+      border-left: 5px solid #c44b4b;
+      box-shadow: 0 4px 12px rgba(196,75,75,0.1);
     }
     .item-details {
       flex: 3;
@@ -246,8 +295,6 @@
       font-weight: 800;
       font-size: 1.1rem;
     }
-
-    /* summary + actions */
     .summary-box {
       background: #fcf8f4;
       border-radius: 28px;
@@ -259,13 +306,13 @@
       white-space: pre-line;
       margin-top: 1.5rem;
       border: 1px solid #ffdecb;
-      max-height: 210px;
+      max-height: 200px;
       overflow-y: auto;
     }
     .action-group {
       display: flex;
       gap: 1rem;
-      margin: 1.5rem 0 0.8rem;
+      margin: 1.2rem 0 0.8rem;
       flex-wrap: wrap;
     }
     .action-button {
@@ -344,10 +391,11 @@
       color: #a98974;
       margin-top: 0.4rem;
     }
-    @media (max-width: 680px) {
+    @media (max-width: 860px) {
+      .split-layout { flex-direction: column; }
+      .ingredients-section { position: static; width: 100%; }
       .order-card { padding: 1.2rem; }
       .user-grid { grid-template-columns: 1fr; }
-      .menu-grid { max-height: 420px; }
     }
   </style>
 </head>
@@ -363,7 +411,6 @@
     <input type="tel" id="customer-phone" class="input-field" placeholder="phone number *" autocomplete="off">
   </div>
 
-  <!-- improved search + category filter -->
   <div class="search-filter-bar">
     <div class="search-box">
       <i class="fas fa-search"></i>
@@ -377,15 +424,27 @@
     </div>
   </div>
 
-  <!-- dynamic menu container (grid) -->
-  <div id="menu-grid-container" class="menu-grid"></div>
+  <div class="split-layout">
+    <div class="menu-section">
+      <div id="menu-grid-container" class="menu-grid"></div>
+    </div>
+    <div class="ingredients-section" id="ingredientsPanel">
+      <div class="ingredients-header">
+        <i class="fas fa-mortar-pestle"></i>
+        <h3>recipe · fresh ingredients</h3>
+      </div>
+      <div id="ingredients-list-container">
+        <div class="empty-ingredients"><i class="fas fa-hand-pointer"></i> click any item to see its real ingredients</div>
+      </div>
+    </div>
+  </div>
 
   <div class="action-group">
     <button class="action-button" id="submit-btn" disabled><i class="fas fa-paper-plane"></i> submit order</button>
     <button class="action-button cancel-btn" id="cancel-btn"><i class="fas fa-trash-alt"></i> cancel order</button>
   </div>
   <div id="order-summary" class="summary-box"></div>
-  <div class="footer-note"><i class="fas fa-leaf"></i> each item has unique ID & fresh ingredients</div>
+  <div class="footer-note"><i class="fas fa-leaf"></i> each item has unique ID & fresh ingredients shown on click</div>
 </div>
 
 <div class="loading-overlay" id="loadingOverlay">
@@ -394,7 +453,7 @@
 
 <script>
   (function() {
-    // ---------- MASTER DATASET with ID (1-70) exactly as provided ----------
+    // ---------- MASTER DATASET with ID 1-70 ----------
     const fullMenu = [
       { id:1, name:"Burger", price:5, category:"sandwiches" }, { id:2, name:"Cheese Burger", price:6, category:"sandwiches" },
       { id:3, name:"Chicken Burger", price:6, category:"sandwiches" }, { id:4, name:"Double Burger", price:8, category:"sandwiches" },
@@ -433,10 +492,81 @@
       { id:69, name:"Tomato Juice", price:2, category:"drinks" }, { id:70, name:"Mango Juice", price:3, category:"drinks" }
     ];
 
-    // store state: quantities keyed by item ID
-    let quantities = new Array(71).fill(0);  // index 1..70
+    // ---------- INGREDIENTS DATABASE (exactly as provided) ----------
+    const ingredientsMap = new Map(); // key: item name (exact match), value: array of ingredients
+    function addIngredient(itemName, ingredient) {
+      if (!ingredientsMap.has(itemName)) ingredientsMap.set(itemName, []);
+      ingredientsMap.get(itemName).push(ingredient);
+    }
+    // Parse the huge ingredient list from the user specification (manual mapping using provided lines)
+    const ingredientLines = [
+      "Burger|Burger Bun","Burger|Beef","Burger|Lettuce","Burger|Tomato","Burger|Onion","Burger|Pickles","Burger|Ketchup","Burger|Mayonnaise",
+      "Cheese Burger|Burger Bun","Cheese Burger|Beef","Cheese Burger|Cheddar Cheese","Cheese Burger|Lettuce","Cheese Burger|Tomato","Cheese Burger|Onion","Cheese Burger|Pickles","Cheese Burger|Ketchup","Cheese Burger|Mayonnaise",
+      "Chicken Burger|Burger Bun","Chicken Burger|Chicken Breast","Chicken Burger|Lettuce","Chicken Burger|Tomato","Chicken Burger|Onion","Chicken Burger|Mayonnaise","Chicken Burger|Ketchup",
+      "Double Burger|Burger Bun","Double Burger|Beef","Double Burger|Beef","Double Burger|Cheddar Cheese","Double Burger|Lettuce","Double Burger|Tomato","Double Burger|Onion","Double Burger|Pickles","Double Burger|Ketchup","Double Burger|Mayonnaise",
+      "Veggie Burger|Burger Bun","Veggie Burger|Veggie Patty","Veggie Burger|Lettuce","Veggie Burger|Tomato","Veggie Burger|Onion","Veggie Burger|Vegan Mayonnaise","Veggie Burger|Ketchup",
+      "Fish Sandwich|Sandwich Bread","Fish Sandwich|Fish Fillet","Fish Sandwich|Lettuce","Fish Sandwich|Tomato","Fish Sandwich|Tartar Sauce","Fish Sandwich|Lemon",
+      "Grilled Chicken Sandwich|Sandwich Bread","Grilled Chicken Sandwich|Grilled Chicken Breast","Grilled Chicken Sandwich|Lettuce","Grilled Chicken Sandwich|Tomato","Grilled Chicken Sandwich|Onion","Grilled Chicken Sandwich|Garlic Sauce","Grilled Chicken Sandwich|Mayonnaise",
+      "Spicy Chicken Sandwich|Sandwich Bread","Spicy Chicken Sandwich|Spicy Chicken Breast","Spicy Chicken Sandwich|Lettuce","Spicy Chicken Sandwich|Tomato","Spicy Chicken Sandwich|Spicy Pickles","Spicy Chicken Sandwich|Spicy Sauce","Spicy Chicken Sandwich|Mayonnaise",
+      "Bacon Burger|Burger Bun","Bacon Burger|Beef","Bacon Burger|Egg","Bacon Burger|Lettuce","Bacon Burger|Tomato","Bacon Burger|Cheddar Cheese","Bacon Burger|Mayonnaise","Bacon Burger|Ketchup",
+      "Mushroom Burger|Burger Bun","Mushroom Burger|Beef","Mushroom Burger|Grilled Mushrooms","Mushroom Burger|Lettuce","Mushroom Burger|Tomato","Mushroom Burger|Caramelized Onions","Mushroom Burger|Mozzarella Cheese","Mushroom Burger|Garlic Sauce",
+      "BBQ Burger|Burger Bun","BBQ Burger|Beef","BBQ Burger|Lettuce","BBQ Burger|Tomato","BBQ Burger|Fried Onions","BBQ Burger|Cheddar Cheese","BBQ Burger|BBQ Sauce",
+      "Tuna Sandwich|Sandwich Bread","Tuna Sandwich|Tuna","Tuna Sandwich|Lettuce","Tuna Sandwich|Tomato","Tuna Sandwich|Onion","Tuna Sandwich|Corn","Tuna Sandwich|Mayonnaise",
+      "Egg Sandwich|Sandwich Bread","Egg Sandwich|Boiled Eggs","Egg Sandwich|Lettuce","Egg Sandwich|Tomato","Egg Sandwich|Mayonnaise",
+      "Club Sandwich|Toast Bread","Club Sandwich|Chicken Breast","Club Sandwich|Egg","Club Sandwich|Lettuce","Club Sandwich|Tomato","Club Sandwich|Mayonnaise","Club Sandwich|Ketchup",
+      "Ham Sandwich|Sandwich Bread","Ham Sandwich|Ham","Ham Sandwich|Lettuce","Ham Sandwich|Tomato","Ham Sandwich|Onion","Ham Sandwich|Cucumber","Ham Sandwich|Mayonnaise",
+      "Salami Sandwich|Sandwich Bread","Salami Sandwich|Salami","Salami Sandwich|Lettuce","Salami Sandwich|Tomato","Salami Sandwich|Olives","Salami Sandwich|Cheese","Salami Sandwich|Mayonnaise",
+      "Turkey Sandwich|Sandwich Bread","Turkey Sandwich|Turkey","Turkey Sandwich|Lettuce","Turkey Sandwich|Tomato","Turkey Sandwich|Mayonnaise","Turkey Sandwich|Mustard",
+      "BLT Sandwich|Toast Bread","BLT Sandwich|Egg","BLT Sandwich|Lettuce","BLT Sandwich|Tomato","BLT Sandwich|Mayonnaise",
+      "Cheesesteak Sandwich|Long Sandwich Bread","Cheesesteak Sandwich|Sliced Beef","Cheesesteak Sandwich|Green Bell Pepper","Cheesesteak Sandwich|Onion","Cheesesteak Sandwich|Mozzarella Cheese",
+      "Pulled Pork Sandwich|Sandwich Bread","Pulled Pork Sandwich|Pulled Pork","Pulled Pork Sandwich|BBQ Sauce","Pulled Pork Sandwich|Coleslaw",
+      "Chicken Nuggets|Chicken Breast","Chicken Nuggets|Breadcrumbs","Chicken Nuggets|Egg","Chicken Nuggets|Flour","Chicken Nuggets|Oil",
+      "French Fries|Potatoes","French Fries|Oil","French Fries|Salt","Mozzarella Sticks|Mozzarella Cheese","Mozzarella Sticks|Breadcrumbs","Mozzarella Sticks|Egg","Mozzarella Sticks|Flour","Mozzarella Sticks|Oil",
+      "Chicken Wings|Chicken Wings","Chicken Wings|Spicy Sauce","Chicken Wings|Oil","Grilled Chicken|Grilled Chicken Breast","Grilled Chicken|Olive Oil","Grilled Chicken|Lemon","Grilled Chicken|Garlic","Grilled Chicken|Spices",
+      "Beef Steak|Beef","Beef Steak|Butter","Beef Steak|Garlic","Beef Steak|Rosemary","Beef Steak|Salt","Beef Steak|Black Pepper",
+      "Pasta Bolognese|Pasta","Pasta Bolognese|Ground Beef","Pasta Bolognese|Tomato Sauce","Pasta Bolognese|Onion","Pasta Bolognese|Carrot","Pasta Bolognese|Celery","Pasta Bolognese|Parmesan",
+      "Spaghetti Carbonara|Spaghetti","Spaghetti Carbonara|Egg","Spaghetti Carbonara|Pecorino Cheese","Spaghetti Carbonara|Bacon","Spaghetti Carbonara|Black Pepper",
+      "Salmon Fillet|Salmon Fillet","Salmon Fillet|Olive Oil","Salmon Fillet|Lemon","Salmon Fillet|Garlic","Salmon Fillet|Herbs",
+      "Fish & Chips|Fish Fillet","Fish & Chips|Breadcrumbs","Fish & Chips|Potatoes","Fish & Chips|Oil","Fish & Chips|Tartar Sauce",
+      "Shrimp Tempura|Shrimp","Shrimp Tempura|Tempura Flour","Shrimp Tempura|Egg","Shrimp Tempura|Ice Water","Shrimp Tempura|Oil","Shrimp Tempura|Sauce",
+      "Pizza Margherita|Pizza Dough","Pizza Margherita|Tomato Sauce","Pizza Margherita|Mozzarella","Pizza Margherita|Basil","Pizza Margherita|Olive Oil",
+      "Pepperoni Pizza|Pizza Dough","Pepperoni Pizza|Tomato Sauce","Pepperoni Pizza|Mozzarella","Pepperoni Pizza|Pepperoni",
+      "Vegetable Pizza|Pizza Dough","Vegetable Pizza|Tomato Sauce","Vegetable Pizza|Mozzarella","Vegetable Pizza|Mushrooms","Vegetable Pizza|Bell Peppers","Vegetable Pizza|Onion","Vegetable Pizza|Olives",
+      "Lasagna|Ground Beef","Lasagna|Tomato Sauce","Lasagna|Ricotta Cheese","Lasagna|Mozzarella","Lasagna|Parmesan","Lasagna|Lasagna Sheets",
+      "Taco Plate|Corn Tortillas","Taco Plate|Ground Beef","Taco Plate|Lettuce","Taco Plate|Tomato","Taco Plate|Cheese","Taco Plate|Spicy Sauce",
+      "Burrito|Wheat Tortilla","Burrito|Rice","Burrito|Beans","Burrito|Chicken","Burrito|Cheese","Burrito|Sauce",
+      "Nachos|Tortilla Chips","Nachos|Melted Cheese","Nachos|Jalapenos","Nachos|Guacamole","Nachos|Sauce",
+      "Fried Rice|Rice","Fried Rice|Egg","Fried Rice|Vegetables","Fried Rice|Soy Sauce","Fried Rice|Oil",
+      "Chicken Curry|Chicken","Chicken Curry|Curry Sauce","Chicken Curry|Coconut Milk","Chicken Curry|Onion","Chicken Curry|Garlic","Chicken Curry|Ginger",
+      "Beef Burger Plate|Ground Beef","Beef Burger Plate|Rice","Beef Burger Plate|Salad",
+      "Veggie Plate|Rice","Veggie Plate|Falafel","Veggie Plate|Hummus","Veggie Plate|Salad","Veggie Plate|Grilled Vegetables",
+      "Mixed Grill|Lamb","Mixed Grill|Chicken","Mixed Grill|Kofta","Mixed Grill|Rice","Mixed Grill|Grilled Vegetables",
+      "Kebab Plate|Ground Lamb","Kebab Plate|Rice","Kebab Plate|Salad","Kebab Plate|Bread",
+      "Sushi Set|Sushi Rice","Sushi Set|Raw Fish","Sushi Set|Nori","Sushi Set|Cucumber","Sushi Set|Avocado","Sushi Set|Soy Sauce",
+      "Ramen Bowl|Noodles","Ramen Bowl|Chicken Broth","Ramen Bowl|Boiled Egg","Ramen Bowl|Vegetables","Ramen Bowl|Meat",
+      "Pad Thai|Rice Noodles","Pad Thai|Shrimp","Pad Thai|Egg","Pad Thai|Peanuts","Pad Thai|Tamarind Sauce",
+      "BBQ Ribs|Pork Ribs","BBQ Ribs|BBQ Sauce","BBQ Ribs|Potatoes","BBQ Ribs|Coleslaw",
+      "Caesar Salad|Romaine Lettuce","Caesar Salad|Chicken Breast","Caesar Salad|Croutons","Caesar Salad|Parmesan Cheese","Caesar Salad|Caesar Dressing",
+      "Greek Salad|Cucumber","Greek Salad|Tomato","Greek Salad|Bell Pepper","Greek Salad|Red Onion","Greek Salad|Olives","Greek Salad|Feta Cheese","Greek Salad|Olive Oil",
+      "Coca Cola|Coca Cola","Pepsi|Pepsi","Sprite|Sprite","7 Up|7 Up","Fanta Orange|Fanta Orange","Fanta Lemon|Fanta Lemon","Mountain Dew|Mountain Dew","Dr Pepper|Dr Pepper","Root Beer|Root Beer","Iced Tea|Iced Tea","Lemonade|Lemonade","Water|Water","Red Bull|Red Bull","Monster|Monster","Ginger Ale|Ginger Ale","Soda Water|Soda Water","Apple Juice|Apple Juice","Orange Juice|Orange Juice","Tomato Juice|Tomato Juice","Mango Juice|Mango Juice"
+    ];
+    ingredientLines.forEach(line => {
+      let [itemName, ingredient] = line.split("|");
+      if (itemName && ingredient) {
+        addIngredient(itemName.trim(), ingredient.trim());
+      }
+    });
+    // For drinks without specific extra ingredients, ensure they have at least one ingredient (the drink itself)
+    fullMenu.forEach(item => {
+      if (item.category === "drinks" && (!ingredientsMap.has(item.name) || ingredientsMap.get(item.name).length === 0)) {
+        ingredientsMap.set(item.name, [item.name]);
+      }
+    });
+
+    let quantities = new Array(71).fill(0);
     let activeCategory = "all";
     let searchTerm = "";
+    let selectedItemIdForIngredients = null; // track which item is clicked for ingredient view
 
     const menuGrid = document.getElementById("menu-grid-container");
     const summaryDiv = document.getElementById("order-summary");
@@ -446,27 +576,37 @@
     const cancelBtn = document.getElementById("cancel-btn");
     const loadingOverlay = document.getElementById("loadingOverlay");
     const searchInput = document.getElementById("search-input");
+    const ingredientsContainer = document.getElementById("ingredients-list-container");
 
-    // helper: render menu items based on filters (category + search)
+    function renderIngredientsPanel(itemName) {
+      const ingredients = ingredientsMap.get(itemName) || [];
+      if (!ingredients.length) {
+        ingredientsContainer.innerHTML = `<div class="empty-ingredients"><i class="fas fa-info-circle"></i> no detailed ingredients listed, but it's delicious!</div>`;
+        return;
+      }
+      let html = `<div style="margin-bottom:0.5rem;"><i class="fas fa-clipboard-list"></i> <strong>${itemName}</strong> composition:</div><div>`;
+      ingredients.forEach(ing => {
+        html += `<span class="ingredient-badge"><i class="fas fa-seedling"></i> ${ing}</span>`;
+      });
+      html += `</div>`;
+      ingredientsContainer.innerHTML = html;
+    }
+
     function renderMenu() {
-      if (!menuGrid) return;
       let filtered = fullMenu.filter(item => {
         const matchesCategory = (activeCategory === "all") || (item.category === activeCategory);
         const matchesSearch = searchTerm === "" || item.name.toLowerCase().includes(searchTerm.toLowerCase());
         return matchesCategory && matchesSearch;
       });
-
       menuGrid.innerHTML = "";
       if (filtered.length === 0) {
         menuGrid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:2rem; color:#a86f52;">✨ no items match</div>`;
         return;
       }
-
       filtered.forEach(item => {
         const qty = quantities[item.id] || 0;
         const card = document.createElement("div");
-        card.className = "menu-item-card";
-
+        card.className = `menu-item-card ${selectedItemIdForIngredients === item.id ? 'selected-for-ingredients' : ''}`;
         const detailsDiv = document.createElement("div");
         detailsDiv.className = "item-details";
         const nameIdDiv = document.createElement("div");
@@ -484,10 +624,8 @@
         priceSpan.innerText = `$${item.price}`;
         detailsDiv.appendChild(nameIdDiv);
         detailsDiv.appendChild(priceSpan);
-
         const qtyModule = document.createElement("div");
         qtyModule.className = "qty-module";
-        qtyModule.dataset.id = item.id;
         const minusBtn = document.createElement("button");
         minusBtn.className = "qty-btn minus";
         minusBtn.innerText = "–";
@@ -498,15 +636,19 @@
         const plusBtn = document.createElement("button");
         plusBtn.className = "qty-btn plus";
         plusBtn.innerText = "+";
-
         qtyModule.appendChild(minusBtn);
         qtyModule.appendChild(qtySpan);
         qtyModule.appendChild(plusBtn);
         card.appendChild(detailsDiv);
         card.appendChild(qtyModule);
+        // click on card (but not on buttons) shows ingredients
+        card.addEventListener("click", (e) => {
+          if (e.target === minusBtn || e.target === plusBtn || e.target === qtySpan) return;
+          selectedItemIdForIngredients = item.id;
+          renderIngredientsPanel(item.name);
+          renderMenu(); // re-render to highlight selected card
+        });
         menuGrid.appendChild(card);
-
-        // event handlers for quantity
         plusBtn.addEventListener("click", (e) => {
           e.stopPropagation();
           let newVal = quantities[item.id] + 1;
@@ -529,7 +671,6 @@
     }
 
     function updateQtyUI(itemId, newQty) {
-      // refresh only the specific item cards inside grid
       const allCards = document.querySelectorAll(".menu-item-card");
       for (let card of allCards) {
         const idBadgeSpan = card.querySelector(".item-id-badge");
@@ -543,19 +684,14 @@
       }
     }
 
-    // update summary (preserve logic, include IDs in payload)
     function updateOrderSummary() {
       const customerName = nameInput.value.trim();
       const customerPhone = phoneInput.value.trim();
       let total = 0;
       let hasItems = false;
       let summaryText = "";
-
-      if (customerName || customerPhone) {
-        summaryText += `👤 ${customerName || '?'}  ·  📞 ${customerPhone || '?'}\n\n`;
-      }
+      if (customerName || customerPhone) summaryText += `👤 ${customerName || '?'}  ·  📞 ${customerPhone || '?'}\n\n`;
       summaryText += `▪️ your order ▪️\n`;
-
       for (let i = 1; i <= 70; i++) {
         const qty = quantities[i];
         if (qty > 0) {
@@ -580,18 +716,17 @@
       submitBtn.disabled = !(nameOk && phoneOk && hasAnyItem);
     }
 
-    // reset all fields & quantities
     function resetAllFields() {
       nameInput.value = "";
       phoneInput.value = "";
       for (let i = 1; i <= 70; i++) quantities[i] = 0;
-      // re-render menu to update all UI buttons + qty displays
-      renderMenu();        // full refresh resets all quantities visually
+      selectedItemIdForIngredients = null;
+      ingredientsContainer.innerHTML = `<div class="empty-ingredients"><i class="fas fa-hand-pointer"></i> click any item to see its real ingredients</div>`;
+      renderMenu();
       updateOrderSummary();
       validateSubmit();
     }
 
-    // notification helper
     function showNotification(msg, type = "success") {
       const notif = document.createElement("div");
       notif.className = `notification ${type}`;
@@ -600,32 +735,20 @@
       setTimeout(() => notif.remove(), 3000);
     }
 
-    // send to n8n
     async function sendOrderToN8n(orderData) {
       const webhookUrl = 'https://alaeddineamamraee.app.n8n.cloud/webhook-test/65d971e0-13f4-44b6-9eaf-1e0fffb390f2';
       try {
-        const resp = await fetch(webhookUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(orderData)
-        });
+        const resp = await fetch(webhookUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(orderData) });
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const data = await resp.json();
         return { success: true, data };
-      } catch (err) {
-        console.error(err);
-        return { success: false, error: err.message };
-      }
+      } catch (err) { console.error(err); return { success: false, error: err.message }; }
     }
 
-    // submit handler: exactly same logic but with id-enriched items
     submitBtn.addEventListener("click", async function() {
       const customerName = nameInput.value.trim();
       const customerPhone = phoneInput.value.trim();
-      if (!customerName || !customerPhone) {
-        showNotification("name & phone required", "error");
-        return;
-      }
+      if (!customerName || !customerPhone) { showNotification("name & phone required", "error"); return; }
       const orderItems = [];
       let total = 0;
       for (let i = 1; i <= 70; i++) {
@@ -635,93 +758,36 @@
           if (item) {
             const subtotal = item.price * qty;
             total += subtotal;
-            orderItems.push({
-              id: item.id,
-              name: item.name,
-              quantity: qty,
-              price: item.price,
-              subtotal: subtotal
-            });
+            orderItems.push({ id: item.id, name: item.name, quantity: qty, price: item.price, subtotal });
           }
         }
       }
-      if (orderItems.length === 0) {
-        showNotification("select at least one item", "error");
-        return;
-      }
-      const currentSummary = summaryDiv.innerText;
-      const payload = {
-        orderId: 'ORD-' + Date.now(),
-        timestamp: new Date().toISOString(),
-        customer: { name: customerName, phone: customerPhone },
-        items: orderItems,
-        total: Number(total.toFixed(2)),
-        summary: currentSummary
-      };
-
+      if (orderItems.length === 0) { showNotification("select at least one item", "error"); return; }
+      const payload = { orderId: 'ORD-' + Date.now(), timestamp: new Date().toISOString(), customer: { name: customerName, phone: customerPhone }, items: orderItems, total: Number(total.toFixed(2)), summary: summaryDiv.innerText };
       loadingOverlay.style.display = "flex";
       submitBtn.disabled = true;
       cancelBtn.disabled = true;
-
       const result = await sendOrderToN8n(payload);
       loadingOverlay.style.display = "none";
       cancelBtn.disabled = false;
-
       if (result.success) {
         showNotification("✅ order placed successfully!", "success");
-        // reset after success: clear name, phone, quantities
-        nameInput.value = "";
-        phoneInput.value = "";
         for (let i = 1; i <= 70; i++) quantities[i] = 0;
-        renderMenu();         // fresh UI
+        selectedItemIdForIngredients = null;
+        ingredientsContainer.innerHTML = `<div class="empty-ingredients"><i class="fas fa-hand-pointer"></i> click any item to see its real ingredients</div>`;
+        nameInput.value = ""; phoneInput.value = "";
+        renderMenu();
         updateOrderSummary();
         validateSubmit();
-      } else {
-        showNotification("❌ sending failed, try again", "error");
-        submitBtn.disabled = false;
-        validateSubmit();
-      }
+      } else { showNotification("❌ sending failed, try again", "error"); submitBtn.disabled = false; validateSubmit(); }
     });
 
-    // cancel button: reset all fields, quantities, summary
-    cancelBtn.addEventListener("click", function() {
-      resetAllFields();
-      showNotification("🧹 Order canceled", "success");
-    });
-
-    // search + category filters
-    function applyFiltersAndRender() {
-      renderMenu();
-    }
-
-    searchInput.addEventListener("input", (e) => {
-      searchTerm = e.target.value;
-      applyFiltersAndRender();
-    });
-
-    // category tab logic
+    cancelBtn.addEventListener("click", () => { resetAllFields(); showNotification("🧹 Order canceled", "success"); });
+    searchInput.addEventListener("input", (e) => { searchTerm = e.target.value; renderMenu(); });
     const catBtns = document.querySelectorAll(".cat-btn");
-    catBtns.forEach(btn => {
-      btn.addEventListener("click", () => {
-        catBtns.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        activeCategory = btn.dataset.cat;
-        applyFiltersAndRender();
-      });
-    });
-
-    // phone number sanitize + validate
-    phoneInput.addEventListener("input", function() {
-      this.value = this.value.replace(/\D/g, '');
-      validateSubmit();
-      updateOrderSummary();
-    });
-    nameInput.addEventListener("input", () => {
-      validateSubmit();
-      updateOrderSummary();
-    });
-
-    // init: full render & summary
+    catBtns.forEach(btn => { btn.addEventListener("click", () => { catBtns.forEach(b => b.classList.remove("active")); btn.classList.add("active"); activeCategory = btn.dataset.cat; renderMenu(); }); });
+    phoneInput.addEventListener("input", function() { this.value = this.value.replace(/\D/g, ''); validateSubmit(); updateOrderSummary(); });
+    nameInput.addEventListener("input", () => { validateSubmit(); updateOrderSummary(); });
     renderMenu();
     updateOrderSummary();
     validateSubmit();
