@@ -23,7 +23,6 @@
       position: relative;
     }
 
-    /* animated background grain */
     body::before {
       content: "";
       position: fixed;
@@ -50,7 +49,6 @@
       z-index: 2;
     }
 
-    /* brand section */
     .brand {
       display: flex;
       align-items: center;
@@ -108,7 +106,6 @@
       transform: translateY(-1px);
     }
 
-    /* search + filter bar */
     .search-filter-bar {
       display: flex;
       flex-wrap: wrap;
@@ -167,7 +164,6 @@
     }
     .cat-btn i { font-size: 0.9rem; }
 
-    /* layout */
     .split-layout {
       display: flex;
       gap: 2rem;
@@ -450,7 +446,7 @@
 
 <script>
 (function() {
-  // ---------- FULL MENU (ID 1-70 same as original) ----------
+  // ---------- FULL MENU (ID 1-70) ----------
   const fullMenu = [
     { id:1, name:"Burger", price:5, category:"sandwiches" },{ id:2, name:"Cheese Burger", price:6, category:"sandwiches" },
     { id:3, name:"Chicken Burger", price:6, category:"sandwiches" },{ id:4, name:"Double Burger", price:8, category:"sandwiches" },
@@ -489,19 +485,20 @@
     { id:69, name:"Tomato Juice", price:2, category:"drinks" },{ id:70, name:"Mango Juice", price:3, category:"drinks" }
   ];
 
-  // ---------- INGREDIENT MAP per item (complete based on spec) ----------
-  const ingredientRecipe = new Map(); // key: item name, value: array of { name, amount, unit }
+  // ---------- INGREDIENT MAP per item ----------
+  const ingredientRecipe = new Map();
   function addIngredient(itemName, ingName, amount, unit) {
     if (!ingredientRecipe.has(itemName)) ingredientRecipe.set(itemName, []);
     ingredientRecipe.get(itemName).push({ name: ingName, amount: amount, unit: unit });
   }
-  // ========== LOAD ALL RECIPES (truncated for brevity but full mapping according to user data) ==========
-  // We embed full dataset logic. Due to size, we show core mapping. Using the provided details.
+  
+  // ========== ALL RECIPES WITH UNIFIED INGREDIENT NAMES ==========
+  // FIX: All "pickle" changed to "pickles" for consistency
   const recipesRaw = {
-    "Burger": [["burger bun",1,"unit"],["ground beef",0.15,"kg"],["cheese",0.02,"kg"],["lettuce",0.02,"kg"],["tomato",0.02,"kg"],["onion",0.01,"kg"],["pickle",0.01,"kg"],["ketchup",0.02,"liter"],["mustard",0.01,"liter"]],
-    "Cheese Burger": [["burger bun",1,"unit"],["ground beef",0.15,"kg"],["cheese",0.04,"kg"],["lettuce",0.02,"kg"],["tomato",0.02,"kg"],["onion",0.01,"kg"],["pickle",0.01,"kg"],["ketchup",0.02,"liter"],["mustard",0.01,"liter"]],
-    "Chicken Burger": [["burger bun",1,"unit"],["chicken breast",0.15,"kg"],["lettuce",0.02,"kg"],["tomato",0.02,"kg"],["onion",0.01,"kg"],["pickle",0.01,"kg"],["mayonnaise",0.02,"liter"],["cheddar cheese",0.02,"kg"]],
-    "Double Burger": [["burger bun",1,"unit"],["ground beef",0.3,"kg"],["cheese",0.04,"kg"],["lettuce",0.02,"kg"],["tomato",0.02,"kg"],["onion",0.01,"kg"],["pickle",0.01,"kg"],["ketchup",0.02,"liter"],["mustard",0.01,"liter"]],
+    "Burger": [["burger bun",1,"unit"],["ground beef",0.15,"kg"],["cheese",0.02,"kg"],["lettuce",0.02,"kg"],["tomato",0.02,"kg"],["onion",0.01,"kg"],["pickles",0.01,"kg"],["ketchup",0.02,"liter"],["mustard",0.01,"liter"]],
+    "Cheese Burger": [["burger bun",1,"unit"],["ground beef",0.15,"kg"],["cheese",0.04,"kg"],["lettuce",0.02,"kg"],["tomato",0.02,"kg"],["onion",0.01,"kg"],["pickles",0.01,"kg"],["ketchup",0.02,"liter"],["mustard",0.01,"liter"]],
+    "Chicken Burger": [["burger bun",1,"unit"],["chicken breast",0.15,"kg"],["lettuce",0.02,"kg"],["tomato",0.02,"kg"],["onion",0.01,"kg"],["pickles",0.01,"kg"],["mayonnaise",0.02,"liter"],["cheddar cheese",0.02,"kg"]],
+    "Double Burger": [["burger bun",1,"unit"],["ground beef",0.3,"kg"],["cheese",0.04,"kg"],["lettuce",0.02,"kg"],["tomato",0.02,"kg"],["onion",0.01,"kg"],["pickles",0.01,"kg"],["ketchup",0.02,"liter"],["mustard",0.01,"liter"]],
     "Veggie Burger": [["burger bun",1,"unit"],["falafel",0.12,"kg"],["lettuce",0.02,"kg"],["tomato",0.02,"kg"],["onion",0.01,"kg"],["cucumber",0.01,"kg"],["tahini sauce",0.02,"liter"]],
     "Fish Sandwich": [["hoagie roll",1,"unit"],["fish fillet",0.15,"kg"],["lettuce",0.02,"kg"],["tartar sauce",0.02,"liter"],["lemon",0.01,"kg"]],
     "Grilled Chicken Sandwich": [["hoagie roll",1,"unit"],["grilled chicken breast",0.15,"kg"],["lettuce",0.02,"kg"],["tomato",0.02,"kg"],["garlic sauce",0.02,"liter"],["grilled vegetables",0.05,"kg"]],
@@ -549,12 +546,15 @@
     "Caesar Salad": [["romaine lettuce",0.1,"kg"],["croutons",0.01,"kg"],["parmesan",0.01,"kg"],["caesar dressing",0.03,"liter"],["chicken breast",0.08,"kg"]],
     "Greek Salad": [["cucumber",0.1,"kg"],["tomato",0.1,"kg"],["feta cheese",0.05,"kg"],["olives",0.02,"kg"],["red onion",0.01,"kg"],["olive oil",0.01,"liter"]]
   };
+  
   // drinks
   const drinksSimple = ["Coca Cola","Pepsi","Sprite","7 Up","Fanta Orange","Fanta Lemon","Mountain Dew","Dr Pepper","Root Beer","Iced Tea","Lemonade","Water","Red Bull","Monster","Ginger Ale","Soda Water","Apple Juice","Orange Juice","Tomato Juice","Mango Juice"];
   drinksSimple.forEach(d => { if(!recipesRaw[d]) recipesRaw[d] = [[d.toLowerCase(),1,"unit"]]; });
+  
   for(let [name, ingList] of Object.entries(recipesRaw)) {
     ingList.forEach(([ing,amt,unit]) => addIngredient(name, ing, amt, unit));
   }
+  
   // fallback for missing items
   fullMenu.forEach(item => { if(!ingredientRecipe.has(item.name)) ingredientRecipe.set(item.name, [{name: item.name, amount:1, unit:"portion"}]); });
 
@@ -581,7 +581,7 @@
   }
 
   function computeTotalIngredients() {
-    const totalUsage = new Map(); // ingredient name + unit -> total amount
+    const totalUsage = new Map();
     for(let i=1;i<=70;i++) {
       const qty = quantities[i];
       if(qty <=0) continue;
@@ -626,12 +626,12 @@
       <div class="qty-module"><button class="qty-btn minus">–</button><span class="qty-number">${qty}</span><button class="qty-btn plus">+</button></div>`;
       card.addEventListener("click", (e) => { if(e.target.classList.contains('qty-btn')) return; selectedItemId = item.id; renderIngredientsPanel(item.name); renderMenu(); });
       const plus = card.querySelector(".plus"); const minus = card.querySelector(".minus");
-      plus.addEventListener("click", (e) => { e.stopPropagation(); quantities[item.id]++; updateQtyUI(item.id); updateOrderSummary(); renderIngredientsPanel(item.name); renderMenu(); });
-      minus.addEventListener("click", (e) => { e.stopPropagation(); if(quantities[item.id]>0) { quantities[item.id]--; updateQtyUI(item.id); updateOrderSummary(); renderIngredientsPanel(item.name); renderMenu(); } });
+      plus.addEventListener("click", (e) => { e.stopPropagation(); quantities[item.id]++; updateOrderSummary(); renderIngredientsPanel(item.name); renderMenu(); });
+      minus.addEventListener("click", (e) => { e.stopPropagation(); if(quantities[item.id]>0) { quantities[item.id]--; updateOrderSummary(); renderIngredientsPanel(item.name); renderMenu(); } });
       menuGridDiv.appendChild(card);
     });
   }
-  function updateQtyUI(id){ /* handled by re-render full menu for simplicity */ }
+  function updateQtyUI(id){}
 
   async function sendOrderWithIngredients() {
     const totalIngMap = computeTotalIngredients();
